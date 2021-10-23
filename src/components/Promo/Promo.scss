@@ -1,0 +1,123 @@
+.promo {
+    padding: 70px 18px;
+    transition: .5s;
+    background-color: #FAFAFA;
+    @media (min-width: $screen-md) {
+        padding: 90px 50px;
+    }
+    @media (min-width: $screen-lg) {
+        padding: 110px 70px;
+    }
+}
+.promo__content {
+    margin-bottom: 60px;
+    @media (min-width: $screen-sm) {
+        display: flex;
+    }
+    div {
+        margin-bottom: 56px;
+        @media (min-width: $screen-sm) {
+            max-width: 50%;
+            width: 100%;
+            margin-right: 30px;
+            margin-bottom: 0;
+        }
+    }
+    @media (min-width: $screen-md) {
+        margin-bottom: 93px;
+    }
+}
+.promo__title {
+    margin: 0;
+    font-weight: 400;
+    font-size: 1.12rem;
+    line-height: 1.37rem;
+    letter-spacing: -0.04em;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #000;
+    margin-bottom: 60px;
+    color: #000;
+    @media (min-width: $screen-md) {
+        margin-bottom: 70px;
+        font-size: 1.37rem;
+        line-height: 1.68;
+        padding-bottom: 23px;
+    }
+}
+
+.promo__subtitle {
+    font-weight: 400;
+    font-size: 1.12rem;
+    line-height: 1.37rem;
+    letter-spacing: -0.04em;
+    color: #000;
+    margin-bottom: 16px;
+    transition: .5s;
+    @media (min-width: $screen-md) {
+        margin-bottom: 22px;
+        font-size: 1.25rem;
+        line-height: 1.5rem;
+    }
+    @media (min-width: $screen-lg) {
+        margin-bottom: 26px;
+    }
+}
+
+.promo__description {
+    font-size: .68rem;
+    line-height: 1rem;
+    color: #000;
+    @media (min-width: $screen-lg) {
+        font-size: .87rem;
+        line-height: 1.25rem;
+    }
+}
+
+.promo__schedule {
+    display: flex;
+}
+
+.promo__shedule-item {
+    font-size: .68rem;
+    line-height: .81rem;
+    text-align: center;
+    padding-top: 11px;
+    span {
+        margin-top: 11px;
+        padding-top: 14px;
+        display: block;
+        color: #A0A0A0;
+        background-color: #FAFAFA;
+        @media (min-width: $screen-md) { 
+            margin-top: 9px;
+            padding-top: 14px;
+        }
+    }
+    @media (min-width: $screen-md) {
+        padding-top: 9px;
+        font-size: .87rem;
+        line-height: 1.06rem;
+    }
+}
+
+.promo__shedule-backend {
+    max-width: 100px;
+    width: 100%;
+    color: #FFFFFF;
+    background-color: #3456F3;
+    transition: .5s;
+    @media (min-width: $screen-md) {
+        max-width: 140px;
+        width: 100%;
+    }
+    @media (min-width: $screen-lg) {
+        max-width: 228px;
+        width: 100%;
+    }
+}
+
+.promo__shedule-frontend {
+    color: #000;
+    width: 100%;
+    background: #F2F2F2;
+}
