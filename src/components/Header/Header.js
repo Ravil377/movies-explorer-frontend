@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Header() {
     return (
@@ -6,8 +7,8 @@ function Header() {
             <header className="header">
                 <div className="logo" />
                 <div className="header__btns">
-                    <button type="button" className="header__btn" id="signupBtn">Регистрация</button>
-                    <button type="button" className="header__btn header__btn_blue" id="signinBtn">Войти</button>
+                    <Link to="signup" className="btn btn_nobg header__btn">Регистрация</Link>
+                    <Link to="signin" className="btn header__btn">Войти</Link>
                 </div>
             </header>
         </>
