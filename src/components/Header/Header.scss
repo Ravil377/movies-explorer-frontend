@@ -8,7 +8,34 @@
 
 .header__btns {
     margin-left: auto;
+    display: block;
 }
+
+.header__btns_logged {
+    display: none;
+}
+
 .header__btn {
     margin-right: 2px;
+}
+
+.header__burger {
+    margin-left: auto;
+    display: none;
+    
+}
+
+.header__burger_logged {
+    display: block;
+    @media (min-width: $screen-lg) {
+        display: none; 
+    }
+}
+
+.header__logo-link {
+    cursor: pointer;
+    transition: .5s;
+    &:hover {
+        opacity: .3;
+    }
 }

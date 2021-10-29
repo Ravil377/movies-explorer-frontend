@@ -1,5 +1,6 @@
 import React from "react";
 import Foto from "../../images/foto.jpg";
+import Portfolio from "../Portfolio/Portfolio";
 
 function aboutme() {
     return (
@@ -24,12 +25,7 @@ function aboutme() {
                         </ul>
                     </div>
                 </div>
-                <div className="aboutme__portfolio-container">
-                    <p className="aboutme__portfolio-title">Портфолио</p>
-                    <p className="aboutme__portfolio-link">Статичный сайт</p>
-                    <p className="aboutme__portfolio-link">Адаптивный сайт</p>
-                    <p className="aboutme__portfolio-link">Одностраничное приложение</p>
-                </div>
+                <Portfolio />
             </section>
         </>
     );

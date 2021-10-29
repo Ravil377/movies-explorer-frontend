@@ -1,111 +1,108 @@
 .promo {
-    padding: 70px 18px;
+    background: #DDDEE3;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 70px;
+    padding-bottom: 30px;
     transition: .5s;
     @media (min-width: $screen-md) {
-        padding: 90px 50px;
+        padding-top: 140px;
+        padding-bottom: 76px;
     }
     @media (min-width: $screen-lg) {
-        padding: 110px 70px;
+        padding: 75px 70px;
+        flex-direction: row;
+        justify-content: space-between;
     }
 }
+
+.promo__image {
+    max-width: 210px;
+    width: 100%;
+    margin-bottom: 44px;
+    transition: .5s;
+    order: 1;
+    @media (min-width: $screen-md) {
+        max-width: 310px;
+        margin-bottom: 48px;
+    }
+    @media (min-width: $screen-lg) {
+        margin-bottom: auto;
+        order: 2;
+    }
+}
+
 .promo__content {
-    margin-bottom: 60px;
-    @media (min-width: $screen-sm) {
-        display: flex;
-    }
-    div {
-        margin-bottom: 56px;
-        @media (min-width: $screen-sm) {
-            max-width: 50%;
-            width: 100%;
-            margin-right: 30px;
-            margin-bottom: 0;
-        }
-    }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    order: 2;
+
     @media (min-width: $screen-md) {
-        margin-bottom: 93px;
+        max-width: 310px;
+        margin-bottom: 48px;
+    }
+    @media (min-width: $screen-lg) {
+        order: 1;
+        max-width: 640px;
+        align-items: unset;
+        margin-right: 20px;
     }
 }
+
 .promo__title {
-    margin-bottom: 60px;
+    font-weight: 400;
+    font-size: 1.87rem;
+    line-height: 2.37rem;
+    text-align: center;
+    letter-spacing: -0.04em;
+    color: #000000;
+    max-width: 300px;
+    margin-bottom: 24px;
+    transition: .5s;
+
     @media (min-width: $screen-md) {
-        margin-bottom: 70px;
+        max-width: 640px;
+        font-size: 2.5rem;
+        line-height: 3.12rem;
+        margin-bottom: 22px;
+    }
+
+    @media (min-width: $screen-lg) {
+        text-align: left;
+        margin-bottom: 36px;
+        font-size: 3.12rem;
+        line-height: 3.62rem;
     }
 }
 
 .promo__subtitle {
     font-weight: 400;
-    font-size: 1.12rem;
-    line-height: 1.37rem;
-    letter-spacing: -0.04em;
-    color: #000;
-    margin-bottom: 16px;
-    transition: .5s;
-    @media (min-width: $screen-md) {
-        margin-bottom: 22px;
-        font-size: 1.25rem;
-        line-height: 1.5rem;
-    }
-    @media (min-width: $screen-lg) {
-        margin-bottom: 26px;
-    }
-}
-
-.promo__description {
-    font-size: .68rem;
+    font-size: .81rem;
     line-height: 1rem;
-    color: #000;
-    @media (min-width: $screen-lg) {
-        font-size: .87rem;
-        line-height: 1.25rem;
-    }
-}
-
-.promo__schedule {
-    display: flex;
-}
-
-.promo__shedule-item {
-    font-size: .68rem;
-    line-height: .81rem;
     text-align: center;
-    padding-top: 11px;
-    span {
-        margin-top: 11px;
-        padding-top: 14px;
-        display: block;
-        color: #A0A0A0;
-        background-color: #FAFAFA;
-        @media (min-width: $screen-md) { 
-            margin-top: 9px;
-            padding-top: 14px;
-        }
-    }
-    @media (min-width: $screen-md) {
-        padding-top: 9px;
-        font-size: .87rem;
-        line-height: 1.06rem;
-    }
-}
-
-.promo__shedule-backend {
-    max-width: 100px;
-    width: 100%;
-    color: #FFFFFF;
-    background-color: #3456F3;
+    color: #000000;
+    opacity: 0.5;
+    max-width: 260px;
+    margin-bottom: 80px;
     transition: .5s;
     @media (min-width: $screen-md) {
-        max-width: 140px;
-        width: 100%;
+        margin-bottom: 92px;
     }
     @media (min-width: $screen-lg) {
-        max-width: 228px;
-        width: 100%;
+        text-align: left;
+        margin-bottom: 146px;
     }
 }
 
-.promo__shedule-frontend {
-    color: #000;
-    width: 100%;
-    background: #F2F2F2;
+.promo__button {
+    width: fit-content;
+    padding: 10px 20px;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    background-color: inherit;
+    border-radius: 3px;
+    font-weight: 500;
+    font-size: 0.75rem;
+    line-height: 1rem;
 }
