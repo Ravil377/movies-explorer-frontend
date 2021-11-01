@@ -4,7 +4,7 @@ function AboutProject(props) {
 
     return (
         <>
-            <section className="aboutproject">
+            <section className="aboutproject content">
                 <h2 className="block-title aboutproject__title">О проекте</h2>
                 <div className="aboutproject__content">
                     <div>

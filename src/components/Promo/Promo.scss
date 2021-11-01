@@ -4,14 +4,17 @@
     align-items: center;
     flex-direction: column;
     padding-top: 70px;
-    padding-bottom: 30px;
+    padding-bottom: 26px;
     transition: .5s;
+
     @media (min-width: $screen-md) {
         padding-top: 140px;
         padding-bottom: 76px;
     }
+
     @media (min-width: $screen-lg) {
-        padding: 75px 70px;
+        padding-top: 75px;
+        padding-bottom: 75px;
         flex-direction: row;
         justify-content: space-between;
     }
@@ -23,10 +26,12 @@
     margin-bottom: 44px;
     transition: .5s;
     order: 1;
+
     @media (min-width: $screen-md) {
         max-width: 310px;
         margin-bottom: 48px;
     }
+
     @media (min-width: $screen-lg) {
         margin-bottom: auto;
         order: 2;
@@ -40,12 +45,11 @@
     order: 2;
 
     @media (min-width: $screen-md) {
-        max-width: 310px;
-        margin-bottom: 48px;
+        margin-bottom: 0;
     }
+    
     @media (min-width: $screen-lg) {
         order: 1;
-        max-width: 640px;
         align-items: unset;
         margin-right: 20px;
     }
@@ -53,10 +57,9 @@
 
 .promo__title {
     font-weight: 400;
-    font-size: 1.87rem;
-    line-height: 2.37rem;
+    font-size: 30px;
+    line-height: 38px;
     text-align: center;
-    letter-spacing: -0.04em;
     color: #000000;
     max-width: 300px;
     margin-bottom: 24px;
@@ -64,16 +67,16 @@
 
     @media (min-width: $screen-md) {
         max-width: 640px;
-        font-size: 2.5rem;
-        line-height: 3.12rem;
+        font-size: 43px;
+        line-height: 49px;
         margin-bottom: 22px;
     }
 
     @media (min-width: $screen-lg) {
         text-align: left;
         margin-bottom: 36px;
-        font-size: 3.12rem;
-        line-height: 3.62rem;
+        font-size: 53px;
+        line-height: 58px
     }
 }
 
@@ -84,25 +87,29 @@
     text-align: center;
     color: #000000;
     opacity: 0.5;
-    max-width: 260px;
+    max-width: 250px;
     margin-bottom: 80px;
     transition: .5s;
+
     @media (min-width: $screen-md) {
         margin-bottom: 92px;
     }
+
     @media (min-width: $screen-lg) {
         text-align: left;
         margin-bottom: 146px;
+        font-size: 13px;
+        line-height: 16px;
     }
 }
 
 .promo__button {
     width: fit-content;
-    padding: 10px 20px;
+    padding: 9px 22px;
     border: 1px solid rgba(0, 0, 0, 0.6);
     background-color: inherit;
     border-radius: 3px;
     font-weight: 500;
-    font-size: 0.75rem;
-    line-height: 1rem;
+    font-size: 12px;
+    line-height: 16px;
 }

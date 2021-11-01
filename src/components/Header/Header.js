@@ -2,8 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Navigation from "../Navigation/Navigation";
 
-function Header({ isMenuOpen, onClose, onOpen, isLogged, signOut }) {
-
+function Header({ isMenuOpen, onClose, onOpen, isLogged, isWhiteHeader }) {
 
     React.useEffect(() => {
         const handleClosePopupOnEsc = (e) => {
@@ -14,13 +13,14 @@ function Header({ isMenuOpen, onClose, onOpen, isLogged, signOut }) {
             document.addEventListener('keyup', handleClosePopupOnEsc);
         } 
         return () => {
+            
             document.removeEventListener('keyup', handleClosePopupOnEsc);
         }
     }, [isMenuOpen, onClose, onOpen]);
 
     return (
         <>
-            <header className="header">
+            <header className={`header content ${isWhiteHeader && 'header_white'}`}>
                 <Navigation isOpen={isMenuOpen} onClose={onClose} />
                 <Link to="/" className="header__logo-link">
                     <div className="logo" />

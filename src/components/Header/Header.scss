@@ -1,14 +1,31 @@
 .header {
     background-color: #DDDEE3;
-    padding: 18px 14px;
-    display: flex;
     align-items: center;
     transition: .5s;
+    display: flex;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    @media (min-width: $screen-md) {
+        margin-left: -20px;
+        margin-right: -20px;
+    }
+    @media (min-width: $screen-lg) {
+        margin: 0;
+        padding-top: 18px;
+        padding-bottom: 18px;
+    }
+
+    &_white {
+        background-color: #fff;
+    }
 }
 
 .header__btns {
     margin-left: auto;
-    display: block;
+    display: none;
+    @media (min-width: $screen-lg) {
+        display: block; 
+    }
 }
 
 .header__btns_logged {
@@ -22,7 +39,6 @@
 .header__burger {
     margin-left: auto;
     display: none;
-    
 }
 
 .header__burger_logged {

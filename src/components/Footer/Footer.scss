@@ -1,22 +1,25 @@
 .footer {
-    padding: 79px 10px 10px;
+    padding: 79px 0 10px;
     @media (min-width: $screen-md) {
-        padding: 79px 30px 20px;
+        padding: 79px 0 20px;
+        margin-left: -13px;
+        margin-right: -13px;
     }
     @media (min-width: $screen-lg) {
-        padding: 79px 70px 20px;
+        margin: 0;
+        padding: 79px 0 20px;
     }
 }
 .footer__text {
     margin: 0;
     font-weight: 400;
-    font-size: .75rem;
-    line-height: .93rem;
+    font-size: 12px;
+    line-height: 15px;
     text-align: center;
     transition: .5s;
     @media (min-width: $screen-md) {
-        font-size: .81rem;
-        line-height: 1rem;
+        font-size: 13px;
+        line-height: 16px;
     }
 }
 .footer__container {
@@ -44,8 +47,10 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    margin-bottom: 30px;
     @media (min-width: $screen-md) {
         order: 2;
+        margin-bottom: 0;
         display: flex;
     }
 }
@@ -53,11 +58,12 @@
 .footer__link {
     margin-bottom: 12px;
     color: #000000;
+    &:last-child {
+        margin-right: 0;
+        margin-bottom: 0;
+    }
     @media (min-width: $screen-md) {
         margin-right: 20px;
-        &:last-child {
-            margin-right: 0;
-        }
     }
 }
 

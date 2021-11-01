@@ -2,14 +2,14 @@
     margin: auto;
     display: flex;
     flex-direction: column;
-    padding: 56px 30px 30px;
-    min-height: 780px;
-    height: fit-content;
+    padding: 0 30px;
+    max-height: 560px;
     max-width: 396px;
     width: 100%;
     box-sizing: border-box;
     @media (min-width: $screen-md) {
         min-height: 596px;
+        margin: auto;
     }
 }
 
@@ -63,6 +63,8 @@
 }
 
 .form__submit-btn {
+    padding: 15px 0;
+    font-size: .75rem;
     margin-top: auto;
     margin-bottom: 14px;
     @media (min-width: $screen-md) {

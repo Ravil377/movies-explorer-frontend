@@ -8,7 +8,7 @@ function Footer() {
 
     return (
         <>
-            <footer className="footer">
+            <footer className="footer content">
                 <p className="footer__text footer__title">Учебный проект Яндекс.Практикум х BeatFilm.</p>
                 <div className="footer__container">
                     <ul className="footer__links">

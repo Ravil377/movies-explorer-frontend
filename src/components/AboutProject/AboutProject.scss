@@ -1,29 +1,37 @@
 .aboutproject {
-    padding: 70px 18px;
+    background: #FAFAFA;
+    padding: 70px 0;
     transition: .5s;
     @media (min-width: $screen-md) {
-        padding: 90px 50px;
+        padding: 90px 0;
     }
     @media (min-width: $screen-lg) {
-        padding: 110px 70px;
+        padding: 110px 0;
     }
 }
 .aboutproject__content {
-    margin-bottom: 60px;
+    margin-bottom: 75px;
     @media (min-width: $screen-sm) {
         display: flex;
     }
     div {
-        margin-bottom: 56px;
+        margin-bottom: 73px;
         @media (min-width: $screen-sm) {
             max-width: 50%;
             width: 100%;
-            margin-right: 30px;
+            margin-right: 40px;
             margin-bottom: 0;
+            &:last-child {
+                margin-right: 0;
+                margin-bottom: 0;
+            }
         }
     }
     @media (min-width: $screen-md) {
-        margin-bottom: 93px;
+        margin-bottom: 90px;
+    }
+    @media (min-width: $screen-lg) {
+        margin-bottom: 110px;
     }
 }
 .aboutproject__title {
@@ -35,16 +43,15 @@
 
 .aboutproject__subtitle {
     font-weight: 400;
-    font-size: 1.12rem;
-    line-height: 1.37rem;
-    letter-spacing: -0.04em;
+    font-size: 18px;
+    line-height: 22px;
     color: #000;
     margin-bottom: 16px;
     transition: .5s;
     @media (min-width: $screen-md) {
         margin-bottom: 22px;
-        font-size: 1.25rem;
-        line-height: 1.5rem;
+        font-size: 20px;
+        line-height: 24px;
     }
     @media (min-width: $screen-lg) {
         margin-bottom: 26px;
@@ -52,12 +59,18 @@
 }
 
 .aboutproject__description {
-    font-size: .68rem;
-    line-height: 1rem;
+    font-size: 11px;
+    line-height: 16px;
     color: #000;
+    @media (min-width: $screen-md) {
+        font-size: 12px;
+        line-height: 18px;
+        max-width: 80%;
+    }
     @media (min-width: $screen-lg) {
-        font-size: .87rem;
-        line-height: 1.25rem;
+        font-size: 14px;
+        line-height: 20px;
+        max-width: 80%;
     }
 }
 
@@ -66,8 +79,8 @@
 }
 
 .aboutproject__shedule-item {
-    font-size: .68rem;
-    line-height: .81rem;
+    font-size: 11px;
+    line-height: 13px;
     text-align: center;
     padding-top: 11px;
     span {
@@ -77,14 +90,14 @@
         color: #A0A0A0;
         background-color: #FAFAFA;
         @media (min-width: $screen-md) { 
-            margin-top: 9px;
+            margin-top: 11px;
             padding-top: 14px;
         }
     }
     @media (min-width: $screen-md) {
         padding-top: 9px;
-        font-size: .87rem;
-        line-height: 1.06rem;
+        font-size: 14px;
+        line-height: 17px;
     }
 }
 

@@ -5,7 +5,7 @@ import Portfolio from "../Portfolio/Portfolio";
 function aboutme() {
     return (
         <>
-            <section className="aboutme">
+            <section className="aboutme content">
                 <h2 className="block-title aboutme__title">Студент</h2>
                 <div className="aboutme__container">
                     <img src={Foto} alt="Фотография" className="aboutme__foto" />
