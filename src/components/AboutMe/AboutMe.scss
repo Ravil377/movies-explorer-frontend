@@ -127,7 +127,10 @@
     font-size: .87rem;
     line-height: 1.06rem;
 
-    color: #000000;
+    a {
+        text-decoration: none;
+        color: #000000;
+    }
     &:last-child {
         margin-right: 0;
     }

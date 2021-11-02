@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, withRouter } from "react-router-dom";
+// import { Link, withRouter } from "react-router-dom";
 import { ReactSVG } from 'react-svg'
 import SvgMagnifier from '../../images/magnifier.svg';
 

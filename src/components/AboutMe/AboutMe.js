@@ -1,6 +1,5 @@
 import React from "react";
 import Foto from "../../images/foto.jpg";
-import Portfolio from "../Portfolio/Portfolio";
 
 function aboutme() {
     return (
@@ -19,13 +18,12 @@ function aboutme() {
                             Активно набираю опыт в коммерческих проектах.
                         </p>
                         <ul className="aboutme__links">
-                            <li className="aboutme__item">Github</li>
-                            <li className="aboutme__item">Email</li>
-                            <li className="aboutme__item">Linkedin</li>
+                            <li className="aboutme__item"><a href="https://github.com/Ravil377" target="_blank" rel="noreferrer">Github</a></li>
+                            <li className="aboutme__item"><a href="mailto:ravil377@mail.ru">Email</a></li>
+                            <li className="aboutme__item"><a href="https://www.linkedin.com/in/ravil-shamilov-2bb736205/" target="_blank" rel="noreferrer">Linkedin</a></li>
                         </ul>
                     </div>
                 </div>
-                <Portfolio />
             </section>
         </>
     );
