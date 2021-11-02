@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
@@ -15,18 +15,16 @@ import Error404 from "../error404/error404";
 
 function App() {
     const [isMenuOpen, setMenuOpen] = React.useState(false);
-    const [loggedIn, setLoggedIn] = React.useState(false);
-    const [isHeader, setIsHeader] = React.useState(false);
-    const [isFooter, setIsFooter] = React.useState(true);
-    const [isWhiteHeader, setIsWhiteHeader] = React.useState(false);
+    const [loggedIn, setLoggedIn] = React.useState(true);
+    const [isLoading, setIsLoading] = React.useState(false);
+    
     const [currentUser, setCurrentUser] = React.useState({ name: "Виталий", email: "pochta@yandex.ru" });
     const history = useHistory();
-
+    const location = useLocation();
     const handleMenuClose = () => setMenuOpen(false);
     const handleMenuOpen = () => setMenuOpen(true);
-    const handleHeader = (bool) => setIsHeader(bool);
-    const handleFooter = (bool) => setIsFooter(bool);
-    const handleWhiteHeader = (bool) => setIsWhiteHeader(bool);
+    const handleLoading = () => setIsLoading((state) => !state);
+
     const handleSignOut = () => {
         setLoggedIn(false);
         history.push("/");
@@ -40,9 +38,7 @@ function App() {
         <>
             <CurrentUserContext.Provider value={currentUser}>
                 <div className="page">
-                    {isHeader && <Header 
-                                        isWhiteHeader={isWhiteHeader} 
-                                        handleWhiteHeader={handleWhiteHeader} 
+                    {location.pathname !== ("signup" || "signin" || "*") && <Header 
                                         isMenuOpen={isMenuOpen} 
                                         isLogged={loggedIn} 
                                         onClose={handleMenuClose}
@@ -52,86 +48,67 @@ function App() {
                         <ProtectedRoute 
                             path="/movies" 
                             loggedIn={loggedIn} 
+                            isLoading={isLoading}
+                            handleLoading={handleLoading}
                             component={Movies} 
-                            handleHeader={handleHeader} 
-                            handleWhiteHeader={setIsWhiteHeader} 
-                            handleFooter={handleFooter} 
                             movies={initialMovies} />
 
                         <ProtectedRoute 
                             path="/saved-movies" 
                             loggedIn={loggedIn} 
+                            isLoading={isLoading}
+                            handleLoading={handleLoading}
                             component={SavedMovies} 
-                            handleHeader={handleHeader} 
-                            handleWhiteHeader={setIsWhiteHeader} 
-                            handleFooter={handleFooter} 
                             movies={initialMovies} />
 
                         <ProtectedRoute
                             path="/profile"
                             loggedIn={loggedIn}
                             component={Profile}
-                            handleWhiteHeader={setIsWhiteHeader}
-                            handleHeader={handleHeader}
                             signOut={handleSignOut}
-                            handleFooter={handleFooter}
                             onUpdateUser={handleUpdateUser}
                         />
 
                         <Route path="/signup">
-                            <Register 
-                                handleHeader={handleHeader} 
-                                handleFooter={handleFooter} />
+                            <Register />
                         </Route>
 
                         <Route path="/signin">
-                            <Login 
-                                handleHeader={handleHeader} 
-                                handleFooter={handleFooter} />
+                            <Login />
                         </Route>
 
                         <Route path="/movies">
                             <Movies 
-                                handleHeader={handleHeader} 
-                                handleWhiteHeader={setIsWhiteHeader} 
-                                handleFooter={handleFooter} 
+                                isLoading={isLoading}
+                                handleLoading={handleLoading}
                                 movies={initialMovies} />
                         </Route>
 
                         <Route path="/saved-movies">
                             <SavedMovies 
-                                handleHeader={handleHeader} 
-                                handleWhiteHeader={setIsWhiteHeader} 
-                                handleFooter={handleFooter} 
+                                isLoading={isLoading}
+                                handleLoading={handleLoading}
                                 movies={initialMovies} />
                         </Route>
 
                         <Route path="/profile">
                             <Profile 
-                                handleWhiteHeader={setIsWhiteHeader} 
-                                handleHeader={handleHeader} 
-                                handleFooter={handleFooter} 
                                 onUpdateUser={handleUpdateUser} 
                                 signOut={handleSignOut} />
                         </Route>
 
                         <Route exact path="/">
-                            <Main 
-                                handleHeader={handleHeader} 
-                                handleWhiteHeader={setIsWhiteHeader}
-                                handleFooter={handleFooter} />
+                            <Main />
                         </Route>
 
                         <Route path="*">
-                            <Error404
-                                handleHeader={handleHeader} 
-                                handleFooter={handleFooter} />
+                            <Error404 />
                         </Route>
 
 
 
                     </Switch>
-                    {isFooter && <Footer />}
+                    {location.pathname !== ("/signup" || "signin" || "*") && <Footer />}
                 </div>
             </CurrentUserContext.Provider>
         </>

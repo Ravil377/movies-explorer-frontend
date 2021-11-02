@@ -2,10 +2,6 @@ import React from "react";
 import Form from "../Form/Form";
 
 function Login(props) {
-    React.useEffect(() => {
-        props.handleHeader(false);
-        props.handleFooter(false);
-    }, [props]);
 
     return (
         <>

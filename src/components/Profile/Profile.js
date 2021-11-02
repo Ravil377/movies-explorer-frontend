@@ -10,11 +10,8 @@ function Profile(props) {
     const handleChangeEmail = (e) => setEmail(e.target.value);
 
     React.useEffect(() => {
-        props.handleFooter(false);
         setName(currentUser.name);
         setEmail(currentUser.email);
-        props.handleHeader(true);
-        props.handleWhiteHeader(true);
     }, [props, currentUser]);
 
     const handlerSignOut = () => {

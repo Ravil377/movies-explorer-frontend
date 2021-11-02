@@ -1,9 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Navigation from "../Navigation/Navigation";
 
-function Header({ isMenuOpen, onClose, onOpen, isLogged, isWhiteHeader }) {
+function Header({ isMenuOpen, onClose, onOpen, isLogged }) {
+    const location = useLocation();
+    const [isWhiteHeader, setIsWhiteHeader] = React.useState(false);
+
     React.useEffect(() => {
+        location.pathname !== ("/") ? setIsWhiteHeader(true) : setIsWhiteHeader(false);
         const handleClosePopupOnEsc = (e) => {
             if (e.code === "Escape") onClose();
         };
@@ -14,12 +18,13 @@ function Header({ isMenuOpen, onClose, onOpen, isLogged, isWhiteHeader }) {
 
         return () => {
             document.removeEventListener("keyup", handleClosePopupOnEsc);
+            setIsWhiteHeader(false);
         };
-    }, [isMenuOpen, onClose, onOpen]);
+    }, [isMenuOpen, onClose, onOpen, location]);
 
     return (
         <>
-            <header className={`header ${isWhiteHeader ? "header_white" : ""}`}>
+            <header className={`header ${isWhiteHeader ? "header_white" : "figa"}`}>
                 <Link to="/" className="header__logo-link">
                     <div className="logo" />
                 </Link>

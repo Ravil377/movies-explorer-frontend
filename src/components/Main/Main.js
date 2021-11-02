@@ -6,11 +6,6 @@ import AboutMe from "../AboutMe/AboutMe";
 import Portfolio from "../Portfolio/Portfolio";
 
 function Main(props) {
-    React.useEffect(() => {
-        props.handleFooter(true);
-        props.handleHeader(true);
-        props.handleWhiteHeader(false);
-    }, [props]);
 
     return (
         <main className="main">

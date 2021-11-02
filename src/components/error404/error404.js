@@ -4,11 +4,6 @@ import { useHistory } from "react-router-dom";
 function Error404(props) {
     const history = useHistory();
 
-    React.useEffect(() => {
-        props.handleFooter(false);
-        props.handleHeader(false);
-    }, [props]);
-
     return (
         <>
             <div className="error content">

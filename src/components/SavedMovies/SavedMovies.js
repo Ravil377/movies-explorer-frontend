@@ -4,11 +4,6 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 
 function SavedMovies(props) {
-    React.useEffect(() => {
-        props.handleHeader(true);
-        props.handleWhiteHeader(true);
-        props.handleFooter(true);
-    }, [props]);
 
     return (
         <div className="movies content">

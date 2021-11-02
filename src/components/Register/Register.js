@@ -14,8 +14,6 @@ function Register(props) {
         setName("");
         setEmail("");
         setPassword("");
-        props.handleHeader(false);
-        props.handleFooter(false);
     }, [props]);
 
     return (
@@ -26,19 +24,17 @@ function Register(props) {
                         Имя
                     </label>
                     <input type="text" name="name" value={name} onChange={handleChangeName} placeholder="" id="name-input" className="form__input" minLength="2" maxLength="30" required />
-                    <span className="form__input-error"></span>
 
                     <label htmlFor="email" className="form__input-title">
                         E-mail
                     </label>
                     <input type="email" name="email" value={email} onChange={handleChangeEmail} placeholder="" id="email-input" className="form__input" required />
-                    <span className="form__input-error"></span>
 
                     <label htmlFor="password" className="form__input-title">
                         Password
                     </label>
                     <input type="password" name="password" value={password} onChange={handleChangePassword} placeholder="" id="password-input" className="form__input" required />
-                    <span className="form__input-error"></span>
+                    <span className="form__error">Что-то пошло не так...</span>
                 </>
             </Form>
         </>

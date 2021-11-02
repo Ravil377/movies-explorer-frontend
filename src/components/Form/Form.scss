@@ -60,6 +60,9 @@
     color: #000000;
     border: none;
     margin-bottom: 20px;
+    &:last-of-type {
+        margin-bottom: 0;
+    }
 }
 
 .form__submit-btn {
@@ -84,4 +87,12 @@
     margin-left: 7px;
     text-decoration: none;
     color: #3456f3;
+}
+
+.form__error {
+    margin-top: 10px;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    color: #EE3465;
 }
