@@ -6,7 +6,10 @@ function Form(props) {
     return (
         <>
             <div className="form__container">
-                <div className="logo form__logo" />
+                {!props.logoOff &&
+                    <Link to="/" className="logo-link">
+                        <div className="logo form__logo" />
+                    </Link>}
                 <h2 className="form__title">{props.title}</h2>
                 <form name={props.name} className={`form ${props.name}`}>
                     {props.children}

@@ -5,6 +5,7 @@
     display: flex;
     padding-top: 15px;
     padding-bottom: 15px;
+    width: auto;
     @media (min-width: $screen-md) {
         margin-left: -20px;
         margin-right: -20px;
@@ -22,10 +23,8 @@
 
 .header__btns {
     margin-left: auto;
-    display: none;
-    @media (min-width: $screen-lg) {
-        display: block; 
-    }
+    display: block; 
+    
 }
 
 .header__btns_logged {

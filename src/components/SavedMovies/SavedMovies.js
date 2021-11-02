@@ -3,7 +3,7 @@ import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 
-function Movies(props) {
+function SavedMovies(props) {
 
     React.useEffect(() => {
         props.handleHeader(true);
@@ -11,8 +11,7 @@ function Movies(props) {
         return () => {
             props.handleHeader(false);
             props.handleWhiteHeader(false);
-        }
-        
+        }        
     }, [props]);
 
     return (
@@ -22,10 +21,10 @@ function Movies(props) {
                     <FilterCheckbox class="movies__checkbox"/>
                 </div>
                 <div className="movies__line"></div>
-                <MoviesCardList class="movies__container" movies={props.movies}/>
+                <MoviesCardList class="movies__container" movies={props.movies} />
                 <button className="movies__more-btn">Ещё</button>
             </div>
     );
 }
 
-export default Movies;
+export default SavedMovies;
