@@ -11,6 +11,7 @@ import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
 import initialMovies from "../../utils/movies";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import Error404 from "../error404/error404";
 
 function App() {
     const [isMenuOpen, setMenuOpen] = React.useState(false);
@@ -39,11 +40,33 @@ function App() {
         <>
             <CurrentUserContext.Provider value={currentUser}>
                 <div className="page">
-                    {isHeader && <Header isWhiteHeader={isWhiteHeader} handleWhiteHeader={handleWhiteHeader} isMenuOpen={isMenuOpen} isLogged={loggedIn} onClose={handleMenuClose} onOpen={handleMenuOpen} />}
+                    {isHeader && <Header 
+                                        isWhiteHeader={isWhiteHeader} 
+                                        handleWhiteHeader={handleWhiteHeader} 
+                                        isMenuOpen={isMenuOpen} 
+                                        isLogged={loggedIn} 
+                                        onClose={handleMenuClose}
+                                        onOpen={handleMenuOpen} />}
 
                     <Switch>
-                        <ProtectedRoute path="/movies" loggedIn={loggedIn} component={Movies} handleHeader={handleHeader} handleWhiteHeader={setIsWhiteHeader} handleFooter={handleFooter} movies={initialMovies} />
-                        <ProtectedRoute path="/saved-movies" loggedIn={loggedIn} component={SavedMovies} handleHeader={handleHeader} handleWhiteHeader={setIsWhiteHeader} handleFooter={handleFooter} movies={initialMovies} />
+                        <ProtectedRoute 
+                            path="/movies" 
+                            loggedIn={loggedIn} 
+                            component={Movies} 
+                            handleHeader={handleHeader} 
+                            handleWhiteHeader={setIsWhiteHeader} 
+                            handleFooter={handleFooter} 
+                            movies={initialMovies} />
+
+                        <ProtectedRoute 
+                            path="/saved-movies" 
+                            loggedIn={loggedIn} 
+                            component={SavedMovies} 
+                            handleHeader={handleHeader} 
+                            handleWhiteHeader={setIsWhiteHeader} 
+                            handleFooter={handleFooter} 
+                            movies={initialMovies} />
+
                         <ProtectedRoute
                             path="/profile"
                             loggedIn={loggedIn}
@@ -56,28 +79,57 @@ function App() {
                         />
 
                         <Route path="/signup">
-                            <Register handleHeader={handleHeader} handleFooter={handleFooter} />
+                            <Register 
+                                handleHeader={handleHeader} 
+                                handleFooter={handleFooter} />
                         </Route>
 
                         <Route path="/signin">
-                            <Login handleHeader={handleHeader} handleFooter={handleFooter} />
+                            <Login 
+                                handleHeader={handleHeader} 
+                                handleFooter={handleFooter} />
                         </Route>
 
                         <Route path="/movies">
-                            <Movies handleHeader={handleHeader} handleWhiteHeader={setIsWhiteHeader} handleFooter={handleFooter} movies={initialMovies} />
+                            <Movies 
+                                handleHeader={handleHeader} 
+                                handleWhiteHeader={setIsWhiteHeader} 
+                                handleFooter={handleFooter} 
+                                movies={initialMovies} />
                         </Route>
 
                         <Route path="/saved-movies">
-                            <SavedMovies handleHeader={handleHeader} handleWhiteHeader={setIsWhiteHeader} handleFooter={handleFooter} movies={initialMovies} />
+                            <SavedMovies 
+                                handleHeader={handleHeader} 
+                                handleWhiteHeader={setIsWhiteHeader} 
+                                handleFooter={handleFooter} 
+                                movies={initialMovies} />
                         </Route>
 
                         <Route path="/profile">
-                            <Profile handleWhiteHeader={setIsWhiteHeader} handleHeader={handleHeader} handleFooter={handleFooter} onUpdateUser={handleUpdateUser} signOut={handleSignOut} />
+                            <Profile 
+                                handleWhiteHeader={setIsWhiteHeader} 
+                                handleHeader={handleHeader} 
+                                handleFooter={handleFooter} 
+                                onUpdateUser={handleUpdateUser} 
+                                signOut={handleSignOut} />
                         </Route>
 
                         <Route exact path="/">
-                            <Main handleHeader={handleHeader} handleWhiteHeader={setIsWhiteHeader} handleFooter={handleFooter} />
+                            <Main 
+                                handleHeader={handleHeader} 
+                                handleWhiteHeader={setIsWhiteHeader}
+                                handleFooter={handleFooter} />
                         </Route>
+
+                        <Route path="*">
+                            <Error404
+                                handleHeader={handleHeader} 
+                                handleFooter={handleFooter} />
+                        </Route>
+
+
+
                     </Switch>
                     {isFooter && <Footer />}
                 </div>
