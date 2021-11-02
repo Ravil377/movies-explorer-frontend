@@ -1,13 +1,8 @@
-@import './vendor/fonts/inter.css';
-@import './utils/variables.scss';
-
-@import './block/root/root.scss';
 @import './block/page/page.scss';
 @import './block/logo/logo.scss';
 @import './block/button/button.scss';
 @import './block/burger/burger.scss';
 @import './block/block-title/block-title.scss';
-
 @import './components/Form/Form.scss';
 @import './components/Header/Header.scss';
 @import './components/Navigation/Navigation.scss';
@@ -21,4 +16,3 @@
 @import './components/Login/Login.scss';
 @import './components/Profile/Profile.scss';
 @import './components/AboutProject/AboutProject.scss';
-
