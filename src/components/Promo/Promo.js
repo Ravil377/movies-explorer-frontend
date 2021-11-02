@@ -1,6 +1,6 @@
 import React from "react";
-import { ReactSVG } from 'react-svg'
-import SvgEarth from '../../images/earth.svg';
+import { ReactSVG } from "react-svg";
+import SvgEarth from "../../images/earth.svg";
 
 function promo() {
     return (
@@ -10,7 +10,9 @@ function promo() {
                 <div className="promo__content">
                     <h1 className="promo__title">Учебный проект студента факультета Веб-разработки.</h1>
                     <p className="promo__subtitle">Листайте ниже, чтобы узнать больше про этот проект и его создателя.</p>
-                    <button className="promo__button">Узнать больше</button>
+                    <a href="https://practicum.yandex.ru/" target="_blank" className="promo__button" rel="noreferrer">
+                        Узнать больше
+                    </a>
                 </div>
             </section>
         </>

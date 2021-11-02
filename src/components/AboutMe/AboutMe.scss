@@ -1,6 +1,6 @@
 .aboutme {
     padding: 70px 0;
-    transition: .5s;
+    transition: 0.5s;
     @media (min-width: $screen-md) {
         padding: 90px 0;
     }
@@ -36,7 +36,7 @@
     border-radius: 10px;
     overflow: hidden;
     margin-bottom: 40px;
-    transition: .5s;
+    transition: 0.5s;
     @media (min-width: 500px) {
         margin: 0;
         order: 2;
@@ -57,7 +57,7 @@
         max-width: 50%;
         margin-right: 49px;
         flex-direction: column;
-    } 
+    }
 }
 
 .aboutme__info-title {
@@ -124,12 +124,16 @@
 .aboutme__item {
     margin-right: 26px;
     font-weight: 500;
-    font-size: .87rem;
+    font-size: 0.87rem;
     line-height: 1.06rem;
 
     a {
         text-decoration: none;
         color: #000000;
+        transition: 0.5s;
+        &:hover {
+            opacity: 0.7;
+        }
     }
     &:last-child {
         margin-right: 0;

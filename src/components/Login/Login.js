@@ -1,9 +1,7 @@
 import React from "react";
-//import { Link, withRouter } from "react-router-dom";
 import Form from "../Form/Form";
 
 function Login(props) {
-    
     React.useEffect(() => {
         props.handleHeader(false);
         props.handleFooter(false);
@@ -13,13 +11,15 @@ function Login(props) {
         <>
             <Form name="login" title="Рады видеть!">
                 <>
-                    <label htmlFor="email" className="form__input-title">E-mail</label>
-                    <input type="email" name="email" placeholder="" id="email-input"
-                        className="form__input" required />
+                    <label htmlFor="email" className="form__input-title">
+                        E-mail
+                    </label>
+                    <input type="email" name="email" placeholder="" id="email-input" className="form__input" required />
                     <span className="form__input-error"></span>
-                    <label htmlFor="password" className="form__input-title">Password</label>
-                    <input type="password" name="password" placeholder="" id="password-input"
-                        className="form__input" required />
+                    <label htmlFor="password" className="form__input-title">
+                        Password
+                    </label>
+                    <input type="password" name="password" placeholder="" id="password-input" className="form__input" required />
                     <span className="form__input-error"></span>
                 </>
             </Form>

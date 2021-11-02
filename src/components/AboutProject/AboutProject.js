@@ -1,7 +1,6 @@
 import React from "react";
 
 function AboutProject(props) {
-
     return (
         <>
             <section className="aboutproject content">
@@ -17,8 +16,12 @@ function AboutProject(props) {
                     </div>
                 </div>
                 <div className="aboutproject__schedule">
-                    <p className="aboutproject__shedule-item aboutproject__shedule-backend">1 неделя <span>Back-end</span></p>
-                    <p className="aboutproject__shedule-item aboutproject__shedule-frontend">4 недели <span>Front-end</span></p>
+                    <p className="aboutproject__shedule-item aboutproject__shedule-backend">
+                        1 неделя <span>Back-end</span>
+                    </p>
+                    <p className="aboutproject__shedule-item aboutproject__shedule-frontend">
+                        4 недели <span>Front-end</span>
+                    </p>
                 </div>
             </section>
         </>

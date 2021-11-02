@@ -1,7 +1,7 @@
 .moviecard {
     display: flex;
     width: 100%;
-    background: #F4F4F4;
+    background: #f4f4f4;
     margin-bottom: 20px;
     flex-direction: column;
     &:last-child {
@@ -19,7 +19,7 @@
     display: flex;
     justify-content: space-between;
     width: auto;
-    
+
     @media (min-width: $screen-sm) {
         flex-direction: column;
         padding: 22px;
@@ -30,7 +30,7 @@
 .moviecard__image {
     width: 100%;
     object-fit: cover;
-    
+
     @media (min-width: $screen-sm) {
         box-sizing: border-box;
         max-width: 232px;
@@ -42,15 +42,15 @@
 
 .moviecard__title {
     font-weight: 500;
-    font-size: .75rem;
-    line-height: .93rem;
+    font-size: 0.75rem;
+    line-height: 0.93rem;
     color: #000000;
     span {
-        font-size: .68rem;
-        line-height: .81rem;
+        font-size: 0.68rem;
+        line-height: 0.81rem;
         margin-top: 8px;
         display: block;
-        color: #A0A0A0;
+        color: #a0a0a0;
     }
     @media (min-width: $screen-sm) {
         font-size: 1.12rem;
@@ -65,7 +65,7 @@
 .moviecard__like {
     margin-top: auto;
     display: inline-block;
-    fill: #EE3465;
+    fill: #ee3465;
 }
 
 .moviecard__like_unlike {

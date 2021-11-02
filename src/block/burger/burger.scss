@@ -11,30 +11,30 @@
 .burger span,
 .burger::before,
 .burger::after {
-  position: absolute;
-  width: calc(100% - 18px);
-  height: 6%;
-  transition: all 0.3s ease 0s;
-  background-color: #000;
+    position: absolute;
+    width: calc(100% - 18px);
+    height: 6%;
+    transition: all 0.3s ease 0s;
+    background-color: #000;
 }
 
 .burger::before,
 .burger::after {
-  content: '';
-  left: 50%;
-  transform: translateX(-50%);
+    content: "";
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .burger::before {
     top: 12.5px;
 }
-  
+
 .burger::after {
     bottom: 12.5px;
 }
 
 .burger span {
-    top:50%;
+    top: 50%;
     transform: translateY(-50%);
 }
 
@@ -43,11 +43,11 @@
 }
 
 .burger_active.burger::before {
-    top:50%;
+    top: 50%;
     transform: translateY(-50%) translateX(-50%) rotate(45deg);
 }
 
 .burger_active.burger::after {
-    top:50%;
+    top: 50%;
     transform: translateY(-50%) translateX(-50%) rotate(-45deg);
 }

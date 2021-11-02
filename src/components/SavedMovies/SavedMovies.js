@@ -4,26 +4,22 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 
 function SavedMovies(props) {
-
     React.useEffect(() => {
         props.handleHeader(true);
         props.handleWhiteHeader(true);
-        return () => {
-            props.handleHeader(false);
-            props.handleWhiteHeader(false);
-        }        
+        props.handleFooter(true);
     }, [props]);
 
     return (
-            <div className="movies content">
-                <div className="movies__search-container">
-                    <SearchForm class="movies__search"/>
-                    <FilterCheckbox class="movies__checkbox"/>
-                </div>
-                <div className="movies__line"></div>
-                <MoviesCardList class="movies__container" movies={props.movies} />
-                <button className="movies__more-btn">Ещё</button>
+        <div className="movies content">
+            <div className="movies__search-container">
+                <SearchForm class="movies__search" />
+                <FilterCheckbox class="movies__checkbox" />
             </div>
+            <div className="movies__line"></div>
+            <MoviesCardList class="movies__container" movies={props.movies} />
+            <button className="movies__more-btn">Ещё</button>
+        </div>
     );
 }
 

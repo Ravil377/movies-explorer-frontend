@@ -10,7 +10,6 @@ function Main(props) {
         props.handleFooter(true);
         props.handleHeader(true);
         props.handleWhiteHeader(false);
-
     }, [props]);
 
     return (

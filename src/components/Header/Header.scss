@@ -1,19 +1,16 @@
 .header {
-    background-color: #DDDEE3;
+    background-color: #dddee3;
+    margin: 0;
     align-items: center;
-    transition: .5s;
+    transition: 0.5s;
     display: flex;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding: 15px 14px;
     width: auto;
     @media (min-width: $screen-md) {
-        margin-left: -20px;
-        margin-right: -20px;
+        padding: 18px 30px;
     }
     @media (min-width: $screen-lg) {
-        margin: 0;
-        padding-top: 18px;
-        padding-bottom: 18px;
+        padding: 18px 70px;
     }
 
     &_white {
@@ -23,8 +20,7 @@
 
 .header__btns {
     margin-left: auto;
-    display: block; 
-    
+    display: block;
 }
 
 .header__btns_logged {
@@ -43,14 +39,14 @@
 .header__burger_logged {
     display: block;
     @media (min-width: $screen-lg) {
-        display: none; 
+        display: none;
     }
 }
 
 .header__logo-link {
     cursor: pointer;
-    transition: .5s;
+    transition: 0.5s;
     &:hover {
-        opacity: .3;
+        opacity: 0.3;
     }
 }

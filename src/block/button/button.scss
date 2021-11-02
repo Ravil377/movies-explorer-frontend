@@ -3,18 +3,18 @@
     border: none;
     border-radius: 3px;
     font-weight: 500;
-    font-size: .62rem;
-    line-height: 1rem;
-    color: #FFFFFF;
+    font-size: 10px;
+    line-height: 16px;
+    color: #ffffff;
     padding: 5px 12px;
-    transition: .3s;
+    transition: 0.3s;
     text-decoration: none;
-    background: #3456F3;
+    background: #3456f3;
     &:hover {
-        opacity: .8;
+        opacity: 0.8;
     }
     @media (min-width: $screen-md) {
-        font-size: .75rem;
+        font-size: 12px;
         padding: 8px 20px;
     }
 

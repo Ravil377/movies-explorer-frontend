@@ -2,7 +2,7 @@
     width: 100%;
     box-sizing: border-box;
     height: 48px;
-    border: 1.5px solid rgba(170, 170, 170, .2);
+    border: 1.5px solid rgba(170, 170, 170, 0.2);
     border-radius: 50px;
     display: flex;
     justify-content: space-between;
@@ -13,11 +13,11 @@
     }
 }
 
-.searchform__input {   
+.searchform__input {
     max-width: calc(100% - 60px);
     width: 100%;
     border: 0;
-    outline:none;
+    outline: none;
 
     &::selection {
         border: 0;
@@ -26,7 +26,7 @@
         font-weight: 400;
         font-size: 11px;
         line-height: 18px;
-        color: #A0A0A0;
+        color: #a0a0a0;
         @media (min-width: $screen-md) {
             font-size: 14px;
         }
@@ -36,11 +36,11 @@
 .searchform__btn {
     width: 34px;
     height: 34px;
-    background: #3456F3;
+    background: #3456f3;
     border-radius: 48px;
     display: flex;
     cursor: pointer;
-    transition: .5s;
+    transition: 0.5s;
     &:hover {
         opacity: 0.3;
     }

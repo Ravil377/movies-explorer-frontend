@@ -1,13 +1,11 @@
 .footer {
-    padding: 79px 0 10px;
+    padding: 79px 10px 10px;
     @media (min-width: $screen-md) {
-        padding: 79px 0 20px;
-        margin-left: -13px;
-        margin-right: -13px;
+        padding: 79px 30px 20px;
     }
     @media (min-width: $screen-lg) {
         margin: 0;
-        padding: 79px 0 20px;
+        padding: 79px 70px 20px;
     }
 }
 .footer__text {
@@ -16,7 +14,7 @@
     font-size: 12px;
     line-height: 15px;
     text-align: center;
-    transition: .5s;
+    transition: 0.5s;
     @media (min-width: $screen-md) {
         font-size: 13px;
         line-height: 16px;
@@ -26,7 +24,7 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    transition: .5s;
+    transition: 0.5s;
     @media (min-width: $screen-md) {
         flex-direction: row;
         justify-content: space-between;
@@ -34,9 +32,9 @@
 }
 
 .footer__title {
-    color: #A0A0A0;
+    color: #a0a0a0;
     padding-bottom: 20px;
-    border-bottom: 1px solid #E8E8E8;
+    border-bottom: 1px solid #e8e8e8;
     margin-bottom: 30px;
     @media (min-width: $screen-md) {
         margin-bottom: 20px;
@@ -57,7 +55,15 @@
 
 .footer__link {
     margin-bottom: 12px;
-    color: #000000;
+
+    a {
+        text-decoration: none;
+        color: #000000;
+        transition: 0.5s;
+        &:hover {
+            opacity: 0.7;
+        }
+    }
     &:last-child {
         margin-right: 0;
         margin-bottom: 0;
@@ -68,7 +74,7 @@
 }
 
 .footer__copyright {
-    color: #A0A0A0;
+    color: #a0a0a0;
     @media (min-width: $screen-md) {
         order: 1;
     }

@@ -1,7 +1,7 @@
 .aboutproject {
-    background: #FAFAFA;
+    background: #fafafa;
     padding: 70px 0;
-    transition: .5s;
+    transition: 0.5s;
     @media (min-width: $screen-md) {
         padding: 90px 0;
     }
@@ -47,7 +47,7 @@
     line-height: 22px;
     color: #000;
     margin-bottom: 16px;
-    transition: .5s;
+    transition: 0.5s;
     @media (min-width: $screen-md) {
         margin-bottom: 22px;
         font-size: 20px;
@@ -87,9 +87,9 @@
         margin-top: 11px;
         padding-top: 14px;
         display: block;
-        color: #A0A0A0;
-        background-color: #FAFAFA;
-        @media (min-width: $screen-md) { 
+        color: #a0a0a0;
+        background-color: #fafafa;
+        @media (min-width: $screen-md) {
             margin-top: 11px;
             padding-top: 14px;
         }
@@ -104,9 +104,9 @@
 .aboutproject__shedule-backend {
     max-width: 100px;
     width: 100%;
-    color: #FFFFFF;
-    background-color: #3456F3;
-    transition: .5s;
+    color: #ffffff;
+    background-color: #3456f3;
+    transition: 0.5s;
     @media (min-width: $screen-md) {
         max-width: 140px;
         width: 100%;
@@ -120,5 +120,5 @@
 .aboutproject__shedule-frontend {
     color: #000;
     width: 100%;
-    background: #F2F2F2;
+    background: #f2f2f2;
 }
