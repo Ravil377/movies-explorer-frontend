@@ -1,11 +1,11 @@
 .aboutme {
-    padding: 70px 18px;
+    padding: 70px 0;
     transition: .5s;
     @media (min-width: $screen-md) {
-        padding: 90px 50px;
+        padding: 90px 0;
     }
     @media (min-width: $screen-lg) {
-        padding: 110px 70px 125px;
+        padding: 110px 0 125px;
     }
 }
 .aboutme__title {
@@ -18,79 +18,98 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 69px;
-    @media (min-width: $screen-md) {
+
+    @media (min-width: 500px) {
         flex-direction: row;
         margin-bottom: 90px;
+        justify-content: space-between;
     }
-    @media (min-width: $screen-md) {
+    @media (min-width: $screen-lg) {
         margin-bottom: 100px;
     }
 }
 
 .aboutme__foto {
     margin: 0 auto;
-    max-width: 292px;
     width: 100%;
     object-fit: cover;
     border-radius: 10px;
     overflow: hidden;
     margin-bottom: 40px;
     transition: .5s;
-    @media (min-width: $screen-md) {
+    @media (min-width: 500px) {
+        margin: 0;
         order: 2;
-        min-width: 255px;
+        max-width: 255px;
+        min-height: 307px;
         margin-bottom: 0;
     }
     @media (min-width: $screen-lg) {
-        order: 2;
-        min-width: 255px;
+        max-width: 270px;
+        min-height: 327px;
         margin-bottom: 0;
     }
 }
 
 .aboutme__info {
-    @media (min-width: $screen-md) {
+    @media (min-width: 500px) {
+        display: flex;
+        max-width: 50%;
         margin-right: 49px;
+        flex-direction: column;
     } 
 }
 
 .aboutme__info-title {
     font-weight: 400;
-    font-size: 1.87rem;
-    line-height: 2.25rem;
-    letter-spacing: -0.04em;
+    font-size: 30px;
+    line-height: 36px;
     color: #000000;
     margin-bottom: 20px;
     @media (min-width: $screen-md) {
-        font-size: 3.12rem;
-        line-height: 3.62rem;
+        font-size: 40px;
+        line-height: 40px;
+        margin-bottom: 15px;
+    }
+    @media (min-width: $screen-lg) {
         margin-bottom: 18px;
+        font-size: 50px;
+        line-height: 58px;
     }
 }
 
 .aboutme__info-subtitle {
     font-weight: 500;
-    font-size: .68rem;
-    line-height: 1rem;
+    font-size: 11px;
+    line-height: 16px;
     color: #000000;
     margin-bottom: 20px;
     @media (min-width: $screen-md) {
-        font-size: 1.12rem;
-        line-height: 1.25rem;
+        font-size: 12px;
+        line-height: 18px;
+        margin-bottom: 20px;
+    }
+    @media (min-width: $screen-lg) {
         margin-bottom: 26px;
+        font-size: 18px;
+        line-height: 20px;
     }
 }
 
 .aboutme__info-description {
     font-weight: 400;
-    font-size: .68rem;
-    line-height: 1rem;
+    font-size: 11px;
+    line-height: 16px;
     color: #000000;
     margin-bottom: 40px;
     @media (min-width: $screen-md) {
-        font-size: .87rem;
-        line-height: 1.37rem;
-        margin-bottom: 99px;
+        margin-bottom: 0;
+        font-size: 12px;
+        line-height: 18px;
+    }
+    @media (min-width: $screen-lg) {
+        font-size: 14px;
+        line-height: 22px;
     }
 }
 
@@ -98,6 +117,7 @@
     list-style: none;
     margin: 0;
     padding: 0;
+    margin-top: auto;
     display: flex;
 }
 

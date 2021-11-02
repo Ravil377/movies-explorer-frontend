@@ -8,24 +8,32 @@ import Footer from "../Footer/Footer";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
+import Movies from "../Movies/Movies";
 
 function App() {
   const [isMenuOpen, setMenuOpen] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(true);
+  const [isHeader, setIsHeader] = React.useState(false);
+  const [isWhiteHeader, setIsWhiteHeader] = React.useState(false);
 
   const handleMenuClose = () => setMenuOpen(false);
   const handleMenuOpen = () => setMenuOpen(true);
+  const handleHeader = (bool) => setIsHeader(true);
+  const handleWhiteHeader = (bool) => setIsWhiteHeader(false);
   const signOut = () => setLoggedIn(false);
 
   return (
     <>
       <div className="page">
-        <Header 
-          isMenuOpen={isMenuOpen}
-          isLogged={loggedIn} 
-          onSignOut={signOut}
-          onClose={handleMenuClose} 
-          onOpen={handleMenuOpen} />
+      {isHeader && <Header 
+        isWhiteHeader={isWhiteHeader}
+        handleWhiteHeader={handleWhiteHeader}
+        isMenuOpen={isMenuOpen}
+        isLogged={loggedIn} 
+        onSignOut={signOut}
+        onClose={handleMenuClose} 
+        onOpen={handleMenuOpen} />}
+      
         <Switch>
             {/* <ProtectedRoute
                 path="/main"
@@ -55,16 +63,20 @@ function App() {
                 <Login />
             </Route>
 
+            <Route path="/movies">
+                <Movies handleHeader={handleHeader} handleWhiteHeader={setIsWhiteHeader} />
+            </Route>
+
             <Route path="/profile">
-                <Profile name="Виталий" email="pochta@yandex.ru" />
+                <Profile name="Виталий" email="pochta@yandex.ru" handleHeader={handleHeader} />
             </Route>
 
             <Route exact path="/">
-                <Main />
-                <Footer />
+                <Main handleHeader={handleHeader} />
                 {/* {loggedIn ? <Redirect to="/main" /> : <Redirect to="/sign-up" />} */}
             </Route>
         </Switch>
+        <Footer />
       </div>
     </>
   );

@@ -5,7 +5,7 @@ import SvgEarth from '../../images/earth.svg';
 function promo() {
     return (
         <>
-            <section className="promo">
+            <section className="promo content">
                 <ReactSVG src={SvgEarth} className="promo__image" />
                 <div className="promo__content">
                     <h1 className="promo__title">Учебный проект студента факультета Веб-разработки.</h1>

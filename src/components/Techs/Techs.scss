@@ -1,11 +1,12 @@
 .techs {
-    padding: 70px 18px;
+    background: #F5F5F5;
+    padding: 70px 0;
     transition: .5s;
     @media (min-width: $screen-md) {
-        padding: 90px 50px;
+        padding: 90px 0;
     }
     @media (min-width: $screen-lg) {
-        padding: 110px 70px;
+        padding: 100px 0;
     }
 }
 
@@ -14,36 +15,45 @@
     @media (min-width: $screen-md) {
         margin-bottom: 80px;
     }
+    @media (min-width: $screen-lg) {
+        margin-bottom: 90px;
+    }
 }
 .techs__subtitle {
+    margin: 0;
     font-weight: 400;
-    font-size: 1.87rem;
-    line-height: 2.25rem;
+    font-size: 30px;
+    line-height: 36px;
     text-align: center;
-    letter-spacing: -0.04em;
     color: #000000;
     margin-bottom: 24px;
     transition: .5s;
     @media (min-width: $screen-md) {
-        margin-bottom: 22px;
-        font-size: 3.12rem;
-        line-height: 3.62rem;
+        margin-bottom: 25px;
+        font-size: 50px;
+        line-height: 58px;
     }
 }
 
 .techs__description {
+    margin: 0 auto;
+    max-width: 460px;
     font-weight: 400;
-    font-size: .68rem;
-    line-height: 1rem;
+    font-size: 11px;
+    line-height: 16px;
     text-align: center;
-    letter-spacing: -0.04em;
     color: #000000;
     margin-bottom: 50px;
     transition: .5s;
     @media (min-width: $screen-md) {
-        font-size: .75rem;
-        line-height: 1.12rem;
+        font-size: 12px;
+        line-height: 18px;
         margin-bottom: 83px;
+    }
+    @media (min-width: $screen-lg) {
+        font-size: 14px;
+        line-height: 20px;
+        margin-bottom: 100px;
     }
 }
 

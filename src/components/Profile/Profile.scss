@@ -1,8 +1,15 @@
 .profile__container {
+    margin: auto;
     display: flex;
     flex-direction: column;
     padding: 70px 30px 40px 30px;
-    height: 100vh;
+    min-height: 100vh;
+    max-width: 410px;
+    width: 100%;
+
+    @media (min-width: $screen-md) {
+        min-height: 441px;
+    }
 }
 
 .profile__title {

@@ -1,3 +1,4 @@
+@import './utils/variables.scss';
 @import './block/page/page.scss';
 @import './block/logo/logo.scss';
 @import './block/button/button.scss';
@@ -8,6 +9,7 @@
 @import './components/Navigation/Navigation.scss';
 @import './components/Main/Main.scss';
 @import './components/Promo/Promo.scss';
+@import './components/AboutProject/AboutProject.scss';
 @import './components/Techs/Techs.scss';
 @import './components/AboutMe/AboutMe.scss';
 @import './components/Portfolio/Portfolio.scss';
@@ -15,4 +17,11 @@
 @import './components/Register/Register.scss';
 @import './components/Login/Login.scss';
 @import './components/Profile/Profile.scss';
-@import './components/AboutProject/AboutProject.scss';
+
+@import './components/MoviesCard/MoviesCard.scss';
+@import './components/MoviesCardList/MoviesCardList.scss';
+@import './components/SearchForm/SearchForm.scss';
+@import './components/FilterCheckbox/FilterCheckbox.scss';
+@import './components/Movies/Movies.scss';
+@import './block/content/content.scss';
+

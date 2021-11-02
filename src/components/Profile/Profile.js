@@ -2,6 +2,9 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 
 function Profile(props) {
+    React.useEffect(() => {
+        props.handleHeader(true);
+    }, [props]);
 
     return (
         <>
