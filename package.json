@@ -22,7 +22,7 @@
     "test": "craco test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "npm run build && scp -r ./build/* kerka377@178.154.222.17:~/react-mesto-api-full/frontend"
+    "deploy": "npm run build && scp -r ./build/* kerka377@84.201.133.210:~/diplom/frontend"
   },
   "eslintConfig": {
     "extends": [
