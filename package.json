@@ -20,7 +20,9 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "npm run build && scp -r ./build/* kerka377@178.154.222.17:~/react-mesto-api-full/frontend"
   },
   "eslintConfig": {
     "extends": [

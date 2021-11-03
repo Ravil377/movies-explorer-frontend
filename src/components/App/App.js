@@ -14,16 +14,33 @@ import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import Error404 from "../error404/error404";
 
 function App() {
+    const exclusionForHeader = [
+        '/',
+        '/movies',
+        '/saved-movies',
+        '/profile',
+    ]
+    const exclusionForFooter = [
+        '/',
+        '/movies',
+        '/saved-movies',
+    ]
+    
     const [isMenuOpen, setMenuOpen] = React.useState(false);
-    const [loggedIn, setLoggedIn] = React.useState(true);
+    const [loggedIn, setLoggedIn] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
     
     const [currentUser, setCurrentUser] = React.useState({ name: "Виталий", email: "pochta@yandex.ru" });
     const history = useHistory();
     const location = useLocation();
+
     const handleMenuClose = () => setMenuOpen(false);
-    const handleMenuOpen = () => setMenuOpen(true);
+    const handleMenuOpen = () => setMenuOpen(false);
     const handleLoading = () => setIsLoading((state) => !state);
+
+    const outputHeader = (exclusionArray) => {
+        return exclusionArray.indexOf(location.pathname) >= 0
+    }
 
     const handleSignOut = () => {
         setLoggedIn(false);
@@ -38,7 +55,7 @@ function App() {
         <>
             <CurrentUserContext.Provider value={currentUser}>
                 <div className="page">
-                    {location.pathname !== ("signup" || "signin" || "*") && <Header 
+                {outputHeader(exclusionForHeader) && <Header 
                                         isMenuOpen={isMenuOpen} 
                                         isLogged={loggedIn} 
                                         onClose={handleMenuClose}
@@ -104,11 +121,8 @@ function App() {
                         <Route path="*">
                             <Error404 />
                         </Route>
-
-
-
                     </Switch>
-                    {location.pathname !== ("/signup" || "signin" || "*") && <Footer />}
+                    {outputHeader(exclusionForFooter) && <Footer />}
                 </div>
             </CurrentUserContext.Provider>
         </>
