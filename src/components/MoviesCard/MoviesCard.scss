@@ -1,0 +1,81 @@
+.moviecard {
+    display: flex;
+    width: 100%;
+    background: #f4f4f4;
+    margin-bottom: 20px;
+    flex-direction: column;
+    &:last-child {
+        margin-bottom: 0;
+    }
+    @media (min-width: $screen-sm) {
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 40px;
+    }
+}
+
+.moviecard__container {
+    padding: 14px 12px;
+    display: flex;
+    justify-content: space-between;
+    width: auto;
+
+    @media (min-width: $screen-sm) {
+        flex-direction: column;
+        padding: 22px;
+        justify-content: unset;
+    }
+}
+
+.moviecard__image {
+    width: 100%;
+    object-fit: cover;
+
+    @media (min-width: $screen-sm) {
+        box-sizing: border-box;
+        max-width: 232px;
+        height: 134px;
+        order: 2;
+        padding: 6px;
+    }
+}
+
+.moviecard__title {
+    font-weight: 500;
+    font-size: 0.75rem;
+    line-height: 0.93rem;
+    color: #000000;
+    span {
+        font-size: 0.68rem;
+        line-height: 0.81rem;
+        margin-top: 8px;
+        display: block;
+        color: #a0a0a0;
+    }
+    @media (min-width: $screen-sm) {
+        font-size: 1.12rem;
+        line-height: 1.37rem;
+
+        span {
+            margin-top: 13px;
+        }
+    }
+}
+
+.moviecard__like {
+    margin-top: auto;
+    display: inline-block;
+    fill: #ee3465;
+    cursor: pointer;
+}
+
+.moviecard__like_unlike {
+    fill: none;
+    stroke: #e8e8e8;
+}
+.moviecard__saved {
+    margin-top: auto;
+    width: 14px;
+    height: 12px;
+    cursor: pointer;
+}

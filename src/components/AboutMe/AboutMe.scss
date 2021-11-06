@@ -1,0 +1,141 @@
+.aboutme {
+    padding: 70px 0;
+    transition: 0.5s;
+    @media (min-width: $screen-md) {
+        padding: 90px 0;
+    }
+    @media (min-width: $screen-lg) {
+        padding: 110px 0 125px;
+    }
+}
+.aboutme__title {
+    margin-bottom: 60px;
+    @media (min-width: $screen-md) {
+        margin-bottom: 66px;
+    }
+}
+.aboutme__container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 69px;
+
+    @media (min-width: 500px) {
+        flex-direction: row;
+        margin-bottom: 90px;
+        justify-content: space-between;
+    }
+    @media (min-width: $screen-lg) {
+        margin-bottom: 100px;
+    }
+}
+
+.aboutme__foto {
+    margin: 0 auto;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 40px;
+    transition: 0.5s;
+    @media (min-width: 500px) {
+        margin: 0;
+        order: 2;
+        max-width: 255px;
+        min-height: 307px;
+        margin-bottom: 0;
+    }
+    @media (min-width: $screen-lg) {
+        max-width: 270px;
+        min-height: 327px;
+        margin-bottom: 0;
+    }
+}
+
+.aboutme__info {
+    @media (min-width: 500px) {
+        display: flex;
+        max-width: 50%;
+        margin-right: 49px;
+        flex-direction: column;
+    }
+}
+
+.aboutme__info-title {
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 36px;
+    color: #000000;
+    margin-bottom: 20px;
+    @media (min-width: $screen-md) {
+        font-size: 40px;
+        line-height: 40px;
+        margin-bottom: 15px;
+    }
+    @media (min-width: $screen-lg) {
+        margin-bottom: 18px;
+        font-size: 50px;
+        line-height: 58px;
+    }
+}
+
+.aboutme__info-subtitle {
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 16px;
+    color: #000000;
+    margin-bottom: 20px;
+    @media (min-width: $screen-md) {
+        font-size: 12px;
+        line-height: 18px;
+        margin-bottom: 20px;
+    }
+    @media (min-width: $screen-lg) {
+        margin-bottom: 26px;
+        font-size: 18px;
+        line-height: 20px;
+    }
+}
+
+.aboutme__info-description {
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 16px;
+    color: #000000;
+    margin-bottom: 40px;
+    @media (min-width: $screen-md) {
+        margin-bottom: 0;
+        font-size: 12px;
+        line-height: 18px;
+    }
+    @media (min-width: $screen-lg) {
+        font-size: 14px;
+        line-height: 22px;
+    }
+}
+
+.aboutme__links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-top: auto;
+    display: flex;
+}
+
+.aboutme__item {
+    margin-right: 26px;
+    font-weight: 500;
+    font-size: 0.87rem;
+    line-height: 1.06rem;
+
+    a {
+        text-decoration: none;
+        color: #000000;
+        transition: 0.5s;
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+    &:last-child {
+        margin-right: 0;
+    }
+}

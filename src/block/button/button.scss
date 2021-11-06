@@ -1,0 +1,25 @@
+.btn {
+    text-decoration: none;
+    border: none;
+    border-radius: 3px;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 16px;
+    color: #ffffff;
+    padding: 5px 12px;
+    transition: 0.3s;
+    text-decoration: none;
+    background: #3456f3;
+    &:hover {
+        opacity: 0.8;
+    }
+    @media (min-width: $screen-md) {
+        font-size: 12px;
+        padding: 8px 20px;
+    }
+
+    &_nobg {
+        background: none;
+        color: #000;
+    }
+}

@@ -1,0 +1,14 @@
+.content {
+    padding-left: 10px;
+    padding-right: 10px;
+
+    @media (min-width: $screen-md) {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+
+    @media (min-width: $screen-lg) {
+        padding-left: 70px;
+        padding-right: 70px;
+    }
+}

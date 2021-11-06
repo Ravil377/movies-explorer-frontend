@@ -1,0 +1,14 @@
+.block-title {
+    margin: 0;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    padding-bottom: 29px;
+    border-bottom: 1px solid #000;
+    color: #000;
+    @media (min-width: $screen-md) {
+        font-size: 22px;
+        line-height: 27px;
+        padding-bottom: 23px;
+    }
+}
