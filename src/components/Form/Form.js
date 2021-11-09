@@ -11,12 +11,12 @@ function Form(props) {
                     </Link>
                 )}
                 <h2 className="form__title">{props.title}</h2>
-                <form name={props.name} className={`form ${props.name}`}>
+                <form name={props.name} className={`form ${props.name}`} onSubmit={props.onSubmit}>
                     {props.children}
-                </form>
                 <button type="submit" className="btn form__submit-btn">
                     {props.name === "register" ? "Зарегистрироваться" : "Войти"}
                 </button>
+                </form>
                 <p className="form__description">
                     {props.name === "register" ? "Уже зарегистрированы?" : "Ещё не зарегистрированы?"}
                     <Link to={props.name === "register" ? "signin" : "signup"} className="form__link">

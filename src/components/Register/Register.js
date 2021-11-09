@@ -16,9 +16,15 @@ function Register(props) {
         setPassword("");
     }, [props]);
 
+    const handleSubmitRegister = (e) => {
+        e.preventDefault();
+        
+        props.onRegister(email, password, name);
+    }
+
     return (
         <>
-            <Form name="register" title="Добро пожаловать!">
+            <Form name="register" title="Добро пожаловать!" onSubmit={handleSubmitRegister}>
                 <>
                     <label htmlFor="name" className="form__input-title">
                         Имя
