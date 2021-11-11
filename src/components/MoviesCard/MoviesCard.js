@@ -11,10 +11,10 @@ function MoviesCard(props) {
     return (
         <>
             <li className="moviecard">
-                <img src={process.env.PUBLIC_URL + `${props.card.image}`} className="moviecard__image" alt="logo" />
+                <img src={`https://api.nomoreparties.co${props.card.image.url}`} className="moviecard__image" alt="logo" />
                 <div className="moviecard__container">
                     <p className="moviecard__title">
-                        {props.card.name}
+                        {props.card.nameRU}
                         <span>{props.card.duration}</span>
                     </p>
                     {location.pathname === ("saved-movies" || "movies") ? <ReactSVG src={Saved} className="moviecard__saved" /> :

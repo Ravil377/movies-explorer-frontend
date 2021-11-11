@@ -5,10 +5,12 @@ import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 import Preloader from "../Preloader/Preloader";
 
 function Movies(props) {
+
+
     return (
         <div className="movies content">
             <div className="movies__search-container">
-                <SearchForm class="movies__search" handleLoading={props.handleLoading}/>
+                <SearchForm class="movies__search" onGetMovies={props.getMovies} />
                 <FilterCheckbox class="movies__checkbox" />
             </div>
             <div className="movies__line"></div>

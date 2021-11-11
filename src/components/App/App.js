@@ -13,7 +13,7 @@ import initialMovies from "../../utils/movies";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import Error404 from "../error404/error404";
 import ApiMain from "../../utils/MainApi";
-import ApiMovies from "../../utils/ApiMovies";
+import ApiMovies from "../../utils/MoviesApi";
 
 function App() {
     const exclusionForHeader = [
@@ -31,8 +31,11 @@ function App() {
     const [isMenuOpen, setMenuOpen] = React.useState(false);
     const [loggedIn, setLoggedIn] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
-    
+    const [isSearch, setIsSearch] = React.useState('');
+    const [movies, setmovies] = React.useState([]);
+    const [filterMovies, setFilterMovies] = React.useState([]);
     const [currentUser, setCurrentUser] = React.useState({});
+
     const history = useHistory();
     const location = useLocation();
 
@@ -46,11 +49,27 @@ function App() {
             .catch((err) => console.log(err));
     }, [history]);
 
+    React.useEffect(() => {
+        const result = movies.filter((movie) => {
+            return movie.nameRU.toLowerCase().includes(isSearch.toLowerCase());
+        }) 
+        setFilterMovies(result);
+        setIsLoading(false);
+    }, [isSearch, movies]);
 
+    const handleGetMovies = (search) => {
+        setIsSearch(search);
+        setIsLoading(true);
+        ApiMovies.getInitialMovies()
+            .then((res) => {
+                setmovies(res);
+            })
+            .catch(err => console.log(err));
+    }
 
     const handleMenuClose = () => setMenuOpen(false);
-    const handleMenuOpen = () => setMenuOpen(false);
-    const handleLoading = () => setIsLoading((state) => !state);
+    const handleMenuOpen = () => setMenuOpen(true);
+
 
     const outputHeader = (exclusionArray) => {
         return exclusionArray.indexOf(location.pathname) >= 0
@@ -110,15 +129,14 @@ function App() {
                             path="/movies" 
                             loggedIn={loggedIn} 
                             isLoading={isLoading}
-                            handleLoading={handleLoading}
-                            component={Movies} 
-                            movies={initialMovies} />
+                            getMovies={handleGetMovies}
+                            component={Movies}
+                            movies={filterMovies} />
 
                         <ProtectedRoute 
                             path="/saved-movies" 
                             loggedIn={loggedIn} 
                             isLoading={isLoading}
-                            handleLoading={handleLoading}
                             component={SavedMovies} 
                             movies={initialMovies} />
 
@@ -142,16 +160,15 @@ function App() {
 
                         <Route path="/movies">
                             <Movies 
+                                getMovies={handleGetMovies}
                                 isLoading={isLoading}
-                                handleLoading={handleLoading}
-                                movies={initialMovies} />
+                                movies={filterMovies} />
                         </Route>
 
                         <Route path="/saved-movies">
                             <SavedMovies 
                                 isLoading={isLoading}
-                                handleLoading={handleLoading}
-                                movies={initialMovies} />
+                                movies={filterMovies} />
                         </Route>
 
                         <Route path="/profile">

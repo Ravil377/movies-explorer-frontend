@@ -1,16 +1,16 @@
 import React from "react";
 import Form from "../Form/Form";
+import { useForm, useFormWithValidation } from "../ValidationForm/ValidationForm";
 
 function Login(props) {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
 
-    const handleChangeEmail = (e) => setEmail(e.target.value);
-    const handleChangePassword = (e) => setPassword(e.target.value);
+    // const handleChangeEmail = (e) => useForm.s(e.target.value);
+    // const handleChangePassword = (e) => setPassword(e.target.value);
 
     const handleSubmitLogin = (e) => {
         e.preventDefault();
-        
         props.onLogin(email, password);
     }
 
@@ -26,8 +26,8 @@ function Login(props) {
                         name="email" 
                         placeholder="" 
                         id="email-input" 
-                        onChange={handleChangeEmail} 
-                        value={email}
+                        onChange={useForm.handleChange} 
+                        value={useForm.values}
                         className="form__input" 
                         required />
                     <span className="form__input-error"></span>
@@ -39,8 +39,8 @@ function Login(props) {
                         name="password" 
                         placeholder="" 
                         id="password-input" 
-                        onChange={handleChangePassword} 
-                        value={password}
+                        onChange={useForm.handleChange} 
+                        value={useForm.values}
                         className="form__input" 
                         required />
                     <span className="form__input-error"></span>

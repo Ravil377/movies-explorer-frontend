@@ -24,49 +24,21 @@ class ApiMovies {
     //     }).then((res) => this._answerForServer(res));
     // }
 
-    login(userEmail, userPassword) {
-        return fetch(`${this._options.baseUrl}/signin`, {
-            method: "POST",
-            credentials:'include',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                password: userPassword,
-                email: userEmail,
-            }),
-        }).then((res) => this._answerForServer(res));
-    }
-
-
-    register(userEmail, userPassword, userName) {
-        return fetch(`${this._options.baseUrl}/signup`, {
-            method: "POST",
-            credentials:'include',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                password: userPassword,
-                email: userEmail,
-                name: userName,
-            }),
-        }).then((res) => this._answerForServer(res));
-    }
-
-    checkToken() {
-        return fetch(`${this._options.baseUrl}/users/me`, {
+    getInitialMovies() {
+        return fetch(`${this._options.baseUrl}`, {
             method: "GET",
-            credentials:'include',
             headers: {
                 'Content-Type': 'application/json',
             },
         }).then((res) => this._answerForServer(res));
     }
+
+
+
 }
 
 const apiOptions = {
-    baseUrl: 'http://localhost:3000'
+    baseUrl: 'https://api.nomoreparties.co/beatfilm-movies'
 };
 
 const apiMovies = new ApiMovies(apiOptions);

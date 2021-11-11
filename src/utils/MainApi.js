@@ -66,7 +66,7 @@ class ApiMain {
 }
 
 const apiOptions = {
-    baseUrl: 'http://localhost:3000'
+    baseUrl: 'http://localhost:3000',
 };
 
 const apiMain = new ApiMain(apiOptions);
