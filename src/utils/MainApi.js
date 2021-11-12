@@ -38,6 +38,15 @@ class ApiMain {
         }).then((res) => this._answerForServer(res));
     }
 
+    logout() {
+        return fetch(`${this._options.baseUrl}/signout`, {
+            method: "POST",
+            credentials:'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then((res) => this._answerForServer(res));
+    }
 
     register(userEmail, userPassword, userName) {
         return fetch(`${this._options.baseUrl}/signup`, {

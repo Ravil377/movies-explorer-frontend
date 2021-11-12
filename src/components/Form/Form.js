@@ -11,7 +11,7 @@ function Form(props) {
                     </Link>
                 )}
                 <h2 className="form__title">{props.title}</h2>
-                <form name={props.name} className={`form ${props.name}`} onSubmit={props.onSubmit} noValidate>
+                <form name={props.name} className={`form ${props.name}`} onSubmit={props.onSubmit}>
                     {props.children}
                 <button type="submit" className="btn form__submit-btn" disabled={!props.buttonActive}>
                     {props.name === "register" ? "Зарегистрироваться" : "Войти"}

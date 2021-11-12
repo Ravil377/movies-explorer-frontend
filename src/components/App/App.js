@@ -76,11 +76,16 @@ function App() {
     }
 
     const handleSignOut = () => {
-        setLoggedIn(false);
-        history.push("/");
+        ApiMain.logout()
+            .then((res) => {
+                setLoggedIn(false);
+                history.push("/");
+            })
+            .catch((err) => console.log(err));
+        
     };
 
-    const handleRegisterUser = (email, password, name) => {
+    const handleRegisterUser = ({ email, password, name }) => {
         ApiMain.register(email, password, name)
             .then((res) => {
                 if (res) {
@@ -95,11 +100,12 @@ function App() {
             });
     };
 
-    const handleLoginUser = (email, password) => {
+    const handleLoginUser = ({ email, password }) => {
         ApiMain.login(email, password)
             .then((res) => {
                 if (res.message === "Пользователь залогинен") {
                     setLoggedIn(true);
+                    setCurrentUser(res);
                     history.push("/");
                 } else {
                     setLoggedIn(false);
