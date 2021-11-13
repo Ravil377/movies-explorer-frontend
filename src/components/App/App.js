@@ -90,13 +90,13 @@ function App() {
             .then((res) => {
                 if (res) {
                     setLoggedIn(true);
-                    history.push("/signin");
-                } else {
-                    setLoggedIn(false);
+                    setCurrentUser(res);
+                    history.push("/movies");
                 }
             })
             .catch((err) => {
-                setLoggedIn(false);
+                console.log(err);
+                // setLoggedIn(false);
             });
     };
 
@@ -106,12 +106,13 @@ function App() {
                 if (res.message === "Пользователь залогинен") {
                     setLoggedIn(true);
                     setCurrentUser(res);
-                    history.push("/");
+                    history.push("/movies");
                 } else {
                     setLoggedIn(false);
                 }
             })
             .catch((err) => {
+                console.log(err);
                 setLoggedIn(false);
             });
     };

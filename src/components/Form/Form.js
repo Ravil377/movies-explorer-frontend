@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Formik, Form } from 'formik';
 
-function Form(props) {
+function FormContainer(props) {
     return (
         <>
             <div className="form__container">
@@ -11,12 +12,20 @@ function Form(props) {
                     </Link>
                 )}
                 <h2 className="form__title">{props.title}</h2>
-                <form name={props.name} className={`form ${props.name}`} onSubmit={props.onSubmit}>
-                    {props.children}
-                <button type="submit" className="btn form__submit-btn" disabled={!props.buttonActive}>
-                    {props.name === "register" ? "Зарегистрироваться" : "Войти"}
-                </button>
-                </form>
+                <Formik 
+                    initialValues={props.initialValues}
+                    validationSchema={props.validate}
+                    onSubmit={value => props.onSubmit(value)}
+                >
+                    {formik => (
+                        <Form>
+                            {props.children}
+                            <button type="submit" className="btn form__submit-btn" disabled={!(formik.isValid && formik.dirty)}>
+                                {props.name === "register" ? "Зарегистрироваться" : "Войти"}
+                            </button>
+                        </Form>
+                    )}
+                </Formik>
                 <p className="form__description">
                     {props.name === "register" ? "Уже зарегистрированы?" : "Ещё не зарегистрированы?"}
                     <Link to={props.name === "register" ? "signin" : "signup"} className="form__link">
@@ -28,4 +37,4 @@ function Form(props) {
     );
 }
 
-export default Form;
+export default FormContainer;
