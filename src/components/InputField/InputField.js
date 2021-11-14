@@ -1,16 +1,21 @@
 import React from "react";
-import { ErrorMessage, useField } from "formik";
 
-function InputField({ label, ...props }) {
-    const [field, setField] = useField(props);
+function InputField(props) {
+
     return (
         <div className="form__input-container">
-            <label htmlFor={field.name} className="form__input-title">{label}</label>
+            <label htmlFor={props.name} className="form__input-title">{props.label}</label>
             <input 
                 className="form__input"
-                {...field} {...props}
+                type={props.type}
+                name={props.name}
+                value={props.value}
+                onChange={props.onChange}
+                minLength={props.minLength}
+                maxLength={props.maxLength}
+                required={props.required}
             />
-            <ErrorMessage component="span" name={field.name} className="form__input-error"/>
+            {props.error && <span className="form__input-error">{props.error}</span>}
         </div>
     )
 }
