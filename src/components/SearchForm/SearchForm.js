@@ -5,11 +5,15 @@ import SvgMagnifier from "../../images/magnifier.svg";
 
 function SearchForm(props) {
     const [search, setSearch] = React.useState("");
+    const [error, setError] = React.useState(false);
     
-    const handleChangeSearch = (e) => setSearch(e.target.value);
+    const handleChangeSearch = (e) => {
+        setError(false);
+        setSearch(e.target.value);
+    }
     const handleSearch = (e) => {
         e.preventDefault();
-        props.onGetMovies(search);
+        search ? props.onGetMovies(search) : setError(true);
     }
 
     return (
@@ -20,6 +24,7 @@ function SearchForm(props) {
                     <button type="submit" className="searchform__btn">
                         <ReactSVG src={SvgMagnifier} className="searchform__image" />
                     </button>
+                    {error && <span className="searchform__search-error">Нужно ввести ключевое слово</span>}
                 </div>
             </form>
         </>

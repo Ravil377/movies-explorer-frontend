@@ -31,8 +31,7 @@ function App() {
     const [isMenuOpen, setMenuOpen] = React.useState(false);
     const [loggedIn, setLoggedIn] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
-    const [isSearch, setIsSearch] = React.useState('');
-    const [movies, setmovies] = React.useState([]);
+    const [isError, setIsError] = React.useState('');
     const [filterMovies, setFilterMovies] = React.useState([]);
     const [currentUser, setCurrentUser] = React.useState({});
 
@@ -49,23 +48,28 @@ function App() {
             .catch((err) => console.log(err));
     }, [history]);
 
-    React.useEffect(() => {
-        const result = movies.filter((movie) => {
-            return movie.nameRU.toLowerCase().includes(isSearch.toLowerCase());
-        }) 
-        setFilterMovies(result);
-        setIsLoading(false);
-    }, [isSearch, movies]);
-
     const handleGetMovies = (search) => {
-        setIsSearch(search);
+        setIsError(false);
         setIsLoading(true);
         ApiMovies.getInitialMovies()
             .then((res) => {
-                setmovies(res);
+                handleFilterMovies(res, search);
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                setIsLoading(false);
+                setIsError('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
+            })
     }
+
+    const handleFilterMovies = (res, search) => {
+        setFilterMovies([]);
+        console.log(res)
+        const result = res.filter((movie) => {
+            return movie.nameRU.toLowerCase().includes(search.toLowerCase());
+        }) 
+        result.length === 0 ? setIsError('Ничего не найдено') : setFilterMovies(result);
+        setIsLoading(false);
+    };
 
     const handleMenuClose = () => setMenuOpen(false);
     const handleMenuOpen = () => setMenuOpen(true);
@@ -136,6 +140,7 @@ function App() {
                             path="/movies" 
                             loggedIn={loggedIn} 
                             isLoading={isLoading}
+                            isError={isError}
                             getMovies={handleGetMovies}
                             component={Movies}
                             movies={filterMovies} />
@@ -169,6 +174,7 @@ function App() {
                             <Movies 
                                 getMovies={handleGetMovies}
                                 isLoading={isLoading}
+                                isError={isError}
                                 movies={filterMovies} />
                         </Route>
 

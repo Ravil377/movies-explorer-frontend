@@ -1,5 +1,5 @@
 .moviecard {
-    display: flex;
+    display: none;
     width: 100%;
     background: #f4f4f4;
     margin-bottom: 20px;
@@ -13,7 +13,9 @@
         margin-bottom: 40px;
     }
 }
-
+.moviecard_visible {
+    display: flex;
+}
 .moviecard__container {
     padding: 14px 12px;
     display: flex;

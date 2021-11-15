@@ -7,10 +7,12 @@ import { useLocation } from "react-router-dom";
 function MoviesCard(props) {
     const location = useLocation();
     const likeButtonClassName = `moviecard__like ${props.card.isLike ? "" : "moviecard__like_unlike"}`;
-
+    React.useEffect(() => {
+        console.log(props.isVisible);
+    }, []);
     return (
         <>
-            <li className="moviecard">
+            <li className={`moviecard ${props.isVisible ? 'moviecard_visible' : ''}`}>
                 <img src={`https://api.nomoreparties.co${props.card.image.url}`} className="moviecard__image" alt="logo" />
                 <div className="moviecard__container">
                     <p className="moviecard__title">
