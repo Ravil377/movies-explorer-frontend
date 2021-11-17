@@ -6,10 +6,13 @@ import { useLocation } from "react-router-dom";
 
 function MoviesCard(props) {
     const location = useLocation();
+    
     const likeButtonClassName = `moviecard__like ${props.card.isLike ? "" : "moviecard__like_unlike"}`;
-    React.useEffect(() => {
-        console.log(props.isVisible);
-    }, []);
+    
+    const handleLikeClick = () => {
+        
+    }
+
     return (
         <>
             <li className={`moviecard ${props.isVisible ? 'moviecard_visible' : ''}`}>
@@ -20,7 +23,7 @@ function MoviesCard(props) {
                         <span>{props.card.duration}</span>
                     </p>
                     {location.pathname === ("saved-movies" || "movies") ? <ReactSVG src={Saved} className="moviecard__saved" /> :
-                        <ReactSVG src={Heart} className={likeButtonClassName} />}
+                        <ReactSVG src={Heart} className={likeButtonClassName} onClick={handleLikeClick}/>}
                 </div>
             </li>
         </>

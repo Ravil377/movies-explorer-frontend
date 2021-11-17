@@ -33,6 +33,7 @@ function App() {
     const [isLoading, setIsLoading] = React.useState(false);
     const [isError, setIsError] = React.useState('');
     const [filterMovies, setFilterMovies] = React.useState([]);
+    const [savedMovies, setSavedMovies] = React.useState([]);
     const [currentUser, setCurrentUser] = React.useState({});
 
     const history = useHistory();
@@ -48,28 +49,55 @@ function App() {
             .catch((err) => console.log(err));
     }, [history]);
 
-    const handleGetMovies = (search) => {
+    React.useEffect(() => {
+        handleGetSavedMovies();
+    }, [loggedIn]);
+
+    const handleGetMovies = (search, checkbox) => {
         setIsError(false);
         setIsLoading(true);
-        ApiMovies.getInitialMovies()
+        if (localStorage.getItem('movies') === null) {
+            ApiMovies.getInitialMovies()
             .then((res) => {
-                handleFilterMovies(res, search);
+                localStorage.setItem("movies", JSON.stringify(res));
+                handleFilterMovies(res, search, checkbox);
             })
             .catch(err => {
                 setIsLoading(false);
                 setIsError('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
             })
+        } else {
+            handleFilterMovies(JSON.parse(localStorage.getItem("movies")), search, checkbox);
+        }
     }
 
-    const handleFilterMovies = (res, search) => {
+    const handleLikeMovies = (id) => {
+        return savedMovies.some((movie) => {
+            return movie.id === id;
+        })
+    }
+    
+    const handleFilterMovies = (movies, search, checkbox) => {
         setFilterMovies([]);
-        console.log(res)
-        const result = res.filter((movie) => {
-            return movie.nameRU.toLowerCase().includes(search.toLowerCase());
-        }) 
+        const result = movies.filter((movie) => {
+            let film = movie.nameRU.toLowerCase().includes(search.toLowerCase());
+            return (checkbox && film) ? movie.duration <= 40 : film;
+        });
+        setIsLoading(false);           
         result.length === 0 ? setIsError('Ничего не найдено') : setFilterMovies(result);
-        setIsLoading(false);
     };
+
+    const handleGetSavedMovies = () => {
+        setIsError(false);
+        ApiMain.getInitialSavedMovies()
+            .then((res) => {
+                console.log(res);
+                setSavedMovies(res);
+            })
+            .catch(err => {
+                setIsError('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
+            })
+    }
 
     const handleMenuClose = () => setMenuOpen(false);
     const handleMenuOpen = () => setMenuOpen(true);
@@ -82,6 +110,7 @@ function App() {
     const handleSignOut = () => {
         ApiMain.logout()
             .then((res) => {
+                localStorage.removeItem('movies');
                 setLoggedIn(false);
                 history.push("/");
             })
@@ -149,6 +178,7 @@ function App() {
                             path="/saved-movies" 
                             loggedIn={loggedIn} 
                             isLoading={isLoading}
+                            getMovies={handleGetSavedMovies}
                             component={SavedMovies} 
                             movies={initialMovies} />
 

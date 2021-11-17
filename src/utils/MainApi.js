@@ -24,6 +24,38 @@ class ApiMain {
     //     }).then((res) => this._answerForServer(res));
     // }
 
+    getInitialSavedMovies() {
+        return fetch(`${this._options.baseUrl}/movies`, {
+            method: "GET",
+            credentials:'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then((res) => this._answerForServer(res));
+    }
+
+    SaveMovie( { country,
+        director,
+        name,
+        duration,
+        year,
+        description,
+        image,
+        trailer,
+        nameRU,
+        nameEN,
+        thumbnail,
+        movieId }) 
+        {
+        return fetch(`${this._options.baseUrl}/movies`, {
+            method: "POST",
+            credentials:'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then((res) => this._answerForServer(res));
+    }
+
     login(userEmail, userPassword) {
         return fetch(`${this._options.baseUrl}/signin`, {
             method: "POST",
