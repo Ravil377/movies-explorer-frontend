@@ -34,21 +34,32 @@ class ApiMain {
         }).then((res) => this._answerForServer(res));
     }
 
-    SaveMovie( { country,
-        director,
-        name,
-        duration,
-        year,
-        description,
-        image,
-        trailer,
-        nameRU,
-        nameEN,
-        thumbnail,
-        movieId }) 
-        {
+    saveMovie(movie) {
         return fetch(`${this._options.baseUrl}/movies`, {
             method: "POST",
+            credentials:'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                country: movie.country,
+                director: movie.director,
+                duration: movie.duration,
+                year: movie.year,
+                description: movie.description,
+                image: `https://api.nomoreparties.co${movie.image.url}`,
+                trailer: movie.trailerLink,
+                nameRU: movie.nameRU,
+                nameEN: movie.nameEN,
+                thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
+                movieId: `${movie.id}`,
+            }),
+        }).then((res) => this._answerForServer(res));
+    }
+
+    deleteMovie(id) {
+        return fetch(`${this._options.baseUrl}/movies/${id}`, {
+            method: "DELETE",
             credentials:'include',
             headers: {
                 'Content-Type': 'application/json',

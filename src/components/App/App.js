@@ -9,7 +9,6 @@ import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
 import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
-import initialMovies from "../../utils/movies";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import Error404 from "../error404/error404";
 import ApiMain from "../../utils/MainApi";
@@ -33,7 +32,7 @@ function App() {
     const [isLoading, setIsLoading] = React.useState(false);
     const [isError, setIsError] = React.useState('');
     const [filterMovies, setFilterMovies] = React.useState([]);
-    const [savedMovies, setSavedMovies] = React.useState([]);
+    const [saveMovies, setSaveMovies] = React.useState([]);
     const [currentUser, setCurrentUser] = React.useState({});
 
     const history = useHistory();
@@ -53,6 +52,14 @@ function App() {
         handleGetSavedMovies();
     }, [loggedIn]);
 
+    // React.useEffect(() => {
+    //     console.log(saveMovies);
+    // }, []);
+
+    const resetFilterMovies = () => {
+        setFilterMovies([]);
+    }
+
     const handleGetMovies = (search, checkbox) => {
         setIsError(false);
         setIsLoading(true);
@@ -71,14 +78,14 @@ function App() {
         }
     }
 
-    const handleLikeMovies = (id) => {
-        return savedMovies.some((movie) => {
-            return movie.id === id;
+    const compareMoviesLike = (id) => {
+        const result = saveMovies.some((movie) => {
+            return movie.movieId == id;
         })
+        return result;
     }
     
     const handleFilterMovies = (movies, search, checkbox) => {
-        setFilterMovies([]);
         const result = movies.filter((movie) => {
             let film = movie.nameRU.toLowerCase().includes(search.toLowerCase());
             return (checkbox && film) ? movie.duration <= 40 : film;
@@ -90,13 +97,12 @@ function App() {
     const handleGetSavedMovies = () => {
         setIsError(false);
         ApiMain.getInitialSavedMovies()
-            .then((res) => {
-                console.log(res);
-                setSavedMovies(res);
-            })
-            .catch(err => {
-                setIsError('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
-            })
+        .then((res) => {
+            setSaveMovies(res,...saveMovies);
+        })
+        .catch(err => {
+            setIsError('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
+        })
     }
 
     const handleMenuClose = () => setMenuOpen(false);
@@ -105,6 +111,29 @@ function App() {
 
     const outputHeader = (exclusionArray) => {
         return exclusionArray.indexOf(location.pathname) >= 0
+    }
+
+    const handleSaveMovie = (movie) => {
+        ApiMain.saveMovie(movie)
+            .then((res) => {
+                setSaveMovies([res, ...saveMovies]);
+            })
+            .catch((err) => console.log(err));
+    };
+
+    const handleRemoveMovie = (id) => {
+        const selectMovie = saveMovies.find((movie) => {
+            return movie.movieId == id;
+        })
+        deleteMovie(selectMovie._id);
+    }
+
+    const deleteMovie = (id) => {
+        ApiMain.deleteMovie(id)
+            .then(async(res) => {
+                await setSaveMovies((saveMovies) => saveMovies.filter((movie) => movie._id !== id));
+            })
+            .catch((err) => console.log(err));
     }
 
     const handleSignOut = () => {
@@ -166,21 +195,33 @@ function App() {
 
                     <Switch>
                         <ProtectedRoute 
+                            component={Movies}
                             path="/movies" 
                             loggedIn={loggedIn} 
                             isLoading={isLoading}
                             isError={isError}
                             getMovies={handleGetMovies}
-                            component={Movies}
-                            movies={filterMovies} />
+                            saveMovie={handleSaveMovie}
+                            removeMovie={handleRemoveMovie}
+                            isLike={compareMoviesLike}
+                            movies={filterMovies}
+                            resetMovies={resetFilterMovies} 
+                        />
 
                         <ProtectedRoute 
+                            component={SavedMovies} 
                             path="/saved-movies" 
                             loggedIn={loggedIn} 
                             isLoading={isLoading}
+                            isError={isError}
+                            getFilterMovies={handleFilterMovies}
                             getMovies={handleGetSavedMovies}
-                            component={SavedMovies} 
-                            movies={initialMovies} />
+                            isLike={compareMoviesLike}
+                            saveMovies={saveMovies}
+                            movies={filterMovies}
+                            deleteMovie={deleteMovie}
+                            resetMovies={resetFilterMovies}
+                        />
 
                         <ProtectedRoute
                             path="/profile"
@@ -203,15 +244,27 @@ function App() {
                         <Route path="/movies">
                             <Movies 
                                 getMovies={handleGetMovies}
+                                saveMovie={handleSaveMovie}
+                                removeMovie={handleRemoveMovie}
+                                resetMovies={resetFilterMovies}
+                                isLike={compareMoviesLike}
                                 isLoading={isLoading}
                                 isError={isError}
-                                movies={filterMovies} />
+                                movies={filterMovies} 
+                            />
                         </Route>
 
                         <Route path="/saved-movies">
                             <SavedMovies 
+                                getFilterMovies={handleFilterMovies}
+                                getMovies={handleGetSavedMovies}
+                                resetMovies={resetFilterMovies}
+                                isLike={compareMoviesLike}
+                                saveMovies={saveMovies}
                                 isLoading={isLoading}
-                                movies={filterMovies} />
+                                isError={isError}
+                                movies={filterMovies} 
+                            />
                         </Route>
 
                         <Route path="/profile">

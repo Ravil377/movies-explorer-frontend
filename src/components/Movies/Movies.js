@@ -9,6 +9,11 @@ function Movies(props) {
     const [search, setSearch] = React.useState("");
     const [shortFilm, setShortFilm] = React.useState(false);
     const [error, setError] = React.useState(false);
+    const http = 'https://api.nomoreparties.co';
+
+    React.useEffect(() => {
+        props.resetMovies();
+    }, []);
 
     const handleChangeVisible = () => {
         setIsVisible(isVisible+7);
@@ -16,6 +21,7 @@ function Movies(props) {
 
     const handleSearch = (e) => {
         e.preventDefault();
+        props.resetMovies();
         search ? props.getMovies(search, shortFilm) : setError(true);
         setIsVisible(6);
     }
@@ -50,8 +56,17 @@ function Movies(props) {
             {props.isLoading && <Preloader />}               
             {(props.movies.length !== 0) && (
                     <>
-                        <MoviesCardList class="movies__container" movies={props.movies} isVisible={isVisible}/>
-                        {(props.movies.length >= 7 && props.movies.length>= isVisible) && <button className="movies__more-btn" onClick={handleChangeVisible}>Ещё</button>}
+                        <MoviesCardList 
+                            class="movies__container" 
+                            movies={props.movies} 
+                            isVisible={isVisible} 
+                            saveMovie={props.saveMovie} 
+                            removeMovie={props.removeMovie}
+                            http={http} 
+                            isLike={props.isLike}
+                        />
+                        {(props.movies.length >= 7 && props.movies.length>= isVisible) 
+                            && <button className="movies__more-btn" onClick={handleChangeVisible}>Ещё</button>}
                     </>)
             }
             {props.isError !== '' && <p className="movies__error">{props.isError}</p>}

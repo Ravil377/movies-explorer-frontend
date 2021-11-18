@@ -2,6 +2,7 @@ import React from "react";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
+import Preloader from "../Preloader/Preloader";
 
 function SavedMovies(props) {
     const [isVisible, setIsVisible] = React.useState(6);
@@ -10,14 +11,23 @@ function SavedMovies(props) {
     const [error, setError] = React.useState(false);
     
     React.useEffect(() => {
-        props.getMovies();
+        // props.getMovies();
+        props.resetMovies();
     }, []);
 
-    const handleSearch = () => {
-
+    const handleChangeVisible = () => {
+        setIsVisible(isVisible+7);
     }
-    const handleChangeSearch = () => {
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        props.resetMovies();
+        search ? props.getFilterMovies(props.saveMovies, search, shortFilm) : setError(true);
+        setIsVisible(6);
+    }
+    const handleChangeSearch = (e) => {
+        setError(false);
+        setSearch(e.target.value);
     }
     const handleCheckbox = () => {
         setShortFilm((state) => !state);
@@ -29,7 +39,7 @@ function SavedMovies(props) {
                 <SearchForm 
                         isSearch={search}
                         isError={error}
-                        onGetMovies={props.getMovies}
+                        onGetMovies={handleSearch}
                         onChange={handleChangeSearch}
                     />
                 </form>
@@ -40,8 +50,22 @@ function SavedMovies(props) {
                 />
             </div>
             <div className="movies__line"></div>
-            <MoviesCardList class="movies__container" movies={props.movies} />
-            <button className="movies__more-btn">Ещё</button>
+            {props.isLoading && <Preloader />}               
+            {(props.movies.length !== 0) && (
+                    <>
+                    <MoviesCardList 
+                        class="movies__container" 
+                        movies={props.movies} 
+                        isVisible={isVisible}
+                        removeMovie={props.removeMovie}
+                        isLike={props.isLike} 
+                        deleteMovie={props.deleteMovie}
+                    />
+                        {(props.movies.length >= 7 && props.movies.length>= isVisible) 
+                            && <button className="movies__more-btn" onClick={handleChangeVisible}>Ещё</button>}
+                    </>)
+            }
+            {props.isError !== '' && <p className="movies__error">{props.isError}</p>}
         </div>
     );
 }

@@ -76,8 +76,35 @@
     stroke: #e8e8e8;
 }
 .moviecard__saved {
+    border: none;
+    background-color: transparent;
+    position: relative;
     margin-top: auto;
     width: 14px;
     height: 12px;
     cursor: pointer;
+    transition: .5s;
+    &:hover {
+        opacity: .5;
+    }
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 100%;
+        height: 1px;
+        background-color: black;
+        transform: rotate(45deg) translateY(-50%);
+    }
+    &::before {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        width: 100%;
+        height: 1px;
+        background-color: black;
+        transform: rotate(-45deg) translateY(-50%);
+    }
 }
