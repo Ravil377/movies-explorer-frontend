@@ -13,6 +13,7 @@ function Movies(props) {
 
     React.useEffect(() => {
         props.resetMovies();
+        setError(false);
     }, []);
 
     const handleChangeVisible = () => {

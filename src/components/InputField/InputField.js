@@ -14,6 +14,7 @@ function InputField(props) {
                 minLength={props.minLength}
                 maxLength={props.maxLength}
                 required={props.required}
+                pattern={props.pattern}
             />
             {props.error && <span className="form__input-error">{props.error}</span>}
         </div>

@@ -13,6 +13,7 @@ function SavedMovies(props) {
     React.useEffect(() => {
         // props.getMovies();
         props.resetMovies();
+        setError(false);
     }, []);
 
     const handleChangeVisible = () => {

@@ -52,10 +52,6 @@ function App() {
         handleGetSavedMovies();
     }, [loggedIn]);
 
-    // React.useEffect(() => {
-    //     console.log(saveMovies);
-    // }, []);
-
     const resetFilterMovies = () => {
         setFilterMovies([]);
     }
