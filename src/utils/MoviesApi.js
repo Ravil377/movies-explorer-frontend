@@ -10,20 +10,6 @@ class ApiMovies {
         return Promise.reject(`Ошибка: ${res.status}`);
     }
 
-    // postProfileInfo(name, about) {
-    //     return fetch(`${this._options.baseUrl}/users/me`, {
-    //         method: "PATCH",
-    //         headers: {
-    //             authorization: `${this._options.authorization}`,
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({
-    //             name: name,
-    //             about: about,
-    //         }),
-    //     }).then((res) => this._answerForServer(res));
-    // }
-
     getInitialMovies() {
         return fetch(`${this._options.baseUrl}`, {
             method: "GET",
@@ -32,9 +18,6 @@ class ApiMovies {
             },
         }).then((res) => this._answerForServer(res));
     }
-
-
-
 }
 
 const apiOptions = {

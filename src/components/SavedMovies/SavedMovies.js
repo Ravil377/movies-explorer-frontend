@@ -3,67 +3,73 @@ import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 import Preloader from "../Preloader/Preloader";
+import useWindowSize from "../../utils/utils";
 
 function SavedMovies(props) {
-    const [isVisible, setIsVisible] = React.useState(6);
+    const windowSize = useWindowSize();
+    const sizeWindows = () => windowSize.width < 427 ? 4 : 6;
+    const [isVisible, setIsVisible] = React.useState(sizeWindows());
     const [search, setSearch] = React.useState("");
-    const [shortFilm, setShortFilm] = React.useState(false);
+    const [isShortFilm, setIsShortFilm] = React.useState(false);
     const [error, setError] = React.useState(false);
     
     React.useEffect(() => {
-        // props.getMovies();
-        props.resetMovies();
+        setIsVisible(sizeWindows);
+    }, [windowSize.width]);
+
+    React.useEffect(() => {
+        props.reset();
         setError(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleChangeVisible = () => {
-        setIsVisible(isVisible+7);
-    }
+    const handleChangeVisible = () => setIsVisible(isVisible + (sizeWindows()+1));
 
-    const handleSearch = (e) => {
+    const handleSearchClick = (e) => {
         e.preventDefault();
-        props.resetMovies();
-        search ? props.getFilterMovies(props.saveMovies, search, shortFilm) : setError(true);
+        props.reset();
+        search ? props.onSearchClick(search, isShortFilm, true) : setError(true);
         setIsVisible(6);
     }
+
     const handleChangeSearch = (e) => {
         setError(false);
         setSearch(e.target.value);
     }
-    const handleCheckbox = () => {
-        setShortFilm((state) => !state);
-    }
+
+    const handleCheckbox = () => setIsShortFilm((state) => !state);
+
     return (
         <div className="movies content">
             <div className="movies__search-container">
-                <form id="searchform" className='searchform movies__search' onSubmit={handleSearch} >
+                <form id="searchform" className='searchform movies__search' onSubmit={handleSearchClick} >
                 <SearchForm 
                         isSearch={search}
                         isError={error}
-                        onGetMovies={handleSearch}
+                        handleSearchClick={handleSearchClick}
                         onChange={handleChangeSearch}
                     />
                 </form>
                 <FilterCheckbox 
                     class="movies__checkbox" 
                     onChange={handleCheckbox}
-                    value={shortFilm}
+                    value={isShortFilm}
                 />
             </div>
             <div className="movies__line"></div>
-            {props.isLoading && <Preloader />}               
-            {(props.movies.length !== 0) && (
+            {props.isLoading ? <Preloader /> : 
+            (props.movies.length !== 0) && (
                     <>
-                    <MoviesCardList 
-                        class="movies__container" 
-                        movies={props.movies} 
-                        isVisible={isVisible}
-                        removeMovie={props.removeMovie}
-                        isLike={props.isLike} 
-                        deleteMovie={props.deleteMovie}
-                    />
-                        {(props.movies.length >= 7 && props.movies.length>= isVisible) 
-                            && <button className="movies__more-btn" onClick={handleChangeVisible}>Ещё</button>}
+                        <MoviesCardList 
+                            class="movies__container" 
+                            movies={props.movies} 
+                            isVisible={isVisible}
+                            removeMovie={props.removeMovie}
+                            isLike={props.isLike} 
+                            deleteMovie={props.deleteMovie}
+                        />
+                            {(props.movies.length > sizeWindows() && props.movies.length > isVisible) 
+                                && <button className="movies__more-btn" onClick={handleChangeVisible}>Ещё</button>}
                     </>)
             }
             {props.isError !== '' && <p className="movies__error">{props.isError}</p>}

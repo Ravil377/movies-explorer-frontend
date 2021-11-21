@@ -5,9 +5,14 @@ import InputField from "../InputField/InputField";
 
 function Register(props) {
     const signupForm = useFormWithValidation();
+    
+    React.useEffect(() => {
+        props.setIsError('');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [signupForm.values]);
+
     const handleSubmitRegister = (e) => {
         e.preventDefault();
-        console.log('hello');
         props.onRegister(signupForm.values);
     }
 
@@ -16,6 +21,7 @@ function Register(props) {
                 name="register" 
                 title="Добро пожаловать!" 
                 onSubmit={handleSubmitRegister}
+                isError={props.isError}
                 buttonActive={signupForm.isValidity} 
             >
                 <InputField 

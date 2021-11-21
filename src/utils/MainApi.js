@@ -4,25 +4,8 @@ class ApiMain {
     }
 
     _answerForServer(res) {
-        if (res.ok) {
-            return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
+        return res.json();
     }
-
-    // postProfileInfo(name, about) {
-    //     return fetch(`${this._options.baseUrl}/users/me`, {
-    //         method: "PATCH",
-    //         headers: {
-    //             authorization: `${this._options.authorization}`,
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({
-    //             name: name,
-    //             about: about,
-    //         }),
-    //     }).then((res) => this._answerForServer(res));
-    // }
 
     getInitialSavedMovies() {
         return fetch(`${this._options.baseUrl}/movies`, {
@@ -102,6 +85,20 @@ class ApiMain {
                 password: userPassword,
                 email: userEmail,
                 name: userName,
+            }),
+        }).then((res) => this._answerForServer(res));
+    }
+
+    updateUser(userName, userEmail) {
+        return fetch(`${this._options.baseUrl}/users/me`, {
+            method: "PATCH",
+            credentials:'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: userName,
+                email: userEmail
             }),
         }).then((res) => this._answerForServer(res));
     }

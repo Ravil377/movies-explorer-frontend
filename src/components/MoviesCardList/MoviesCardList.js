@@ -2,7 +2,7 @@ import React from "react";
 import MoviesCard from "../MoviesCard/MoviesCard";
 
 function MoviesCardList(props) {
-
+    const isLike = (id) => props.isLike(id);
 
     return (
         <ul className={`moviecards__list ${props.class}`}>
@@ -14,7 +14,7 @@ function MoviesCardList(props) {
                         saveMovie={props.saveMovie} 
                         removeMovie={props.removeMovie}
                         http={props.http} 
-                        isLike={props.isLike(movie.id)}
+                        isLike={isLike(movie.id)}
                         deleteMovie={props.deleteMovie}
                     />
             ))}

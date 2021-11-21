@@ -6,10 +6,6 @@ function Profile(props) {
     const currentUser = React.useContext(CurrentUserContext);
     const signupForm = useFormWithValidation();
 
-    React.useEffect(() => {
-        console.log(signupForm.errors);
-    }, [signupForm.errors]);
-
     const handlerSignOut = () => {
         props.signOut();
     };
@@ -34,6 +30,7 @@ function Profile(props) {
                             maxLength="30"
                             onChange={signupForm.handleChange} 
                             value={signupForm.values.name}
+                            pattern='^[А-Яа-яЁёA-Za-z]+[\s\-]?[А-Яа-яЁёA-Za-z]+$'
                             required
                         />
                         {signupForm.errors.name && <span className="form__input-error profile__input-error">{signupForm.errors.name}</span>}
@@ -46,12 +43,13 @@ function Profile(props) {
                             name="email" 
                             onChange={signupForm.handleChange} 
                             value={signupForm.values.email} 
+                            pattern="^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
                             required
                         />
                         {signupForm.errors.email && <span className="form__input-error profile__input-error">{signupForm.errors.email || ''}</span>}
                     </div>
                     <div className="profile__navigation">
-                        <p className="profile__link" onClick={handlerEditProfile}>Редактировать</p>
+                        <button type="submit" className="profile__link" onClick={handlerEditProfile} disabled={!signupForm.isValidity}>Редактировать</button>
                         <p className="profile__link profile__link_red" onClick={handlerSignOut}>Выйти из аккаунта</p>
                     </div>
                 </form>

@@ -5,6 +5,12 @@ import InputField from "../InputField/InputField";
 
 function Login(props) {
     const signupForm = useFormWithValidation();
+
+    React.useEffect(() => {
+        props.setIsError('');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [signupForm.values]);
+
     const handleSubmitLogin = (e) => {
         e.preventDefault();
         props.onLogin(signupForm.values);
@@ -15,6 +21,7 @@ function Login(props) {
                 name="login" 
                 title="Рады видеть!" 
                 onSubmit={handleSubmitLogin}
+                isError={props.isError}
                 buttonActive={signupForm.isValidity} 
             >
                 <InputField 

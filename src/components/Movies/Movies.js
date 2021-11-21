@@ -3,43 +3,48 @@ import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 import Preloader from "../Preloader/Preloader";
+import useWindowSize from "../../utils/utils";
 
 function Movies(props) {
-    const [isVisible, setIsVisible] = React.useState(6);
+    const windowSize = useWindowSize();
+    const sizeWindows = () => windowSize.width < 427 ? 4 : 6;
+    const [isVisible, setIsVisible] = React.useState(sizeWindows());
     const [search, setSearch] = React.useState("");
     const [shortFilm, setShortFilm] = React.useState(false);
     const [error, setError] = React.useState(false);
     const http = 'https://api.nomoreparties.co';
 
     React.useEffect(() => {
-        props.resetMovies();
+        setIsVisible(sizeWindows);
+    }, [windowSize.width]);
+
+    React.useEffect(() => {
+        props.reset();
         setError(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleChangeVisible = () => {
-        setIsVisible(isVisible+7);
-    }
+    const handleChangeVisible = () => setIsVisible(isVisible + (sizeWindows()+1));
 
-    const handleSearch = (e) => {
+    const handleSearchClick = (e) => {
         e.preventDefault();
-        props.resetMovies();
-        search ? props.getMovies(search, shortFilm) : setError(true);
-        setIsVisible(6);
+        props.reset();
+        search ? props.getMovies(search, shortFilm, false) : setError(true);
+        setIsVisible(sizeWindows());
     }
    
-    const handleCheckbox = () => {
-        setShortFilm((state) => !state);
-    }
+    const handleCheckbox = () => setShortFilm((state) => !state);
 
     const handleChangeSearch = (e) => {
         setError(false);
+        props.reset();
         setSearch(e.target.value);
     }
 
     return (
         <div className="movies content">
             <div className="movies__search-container">
-                <form id="searchform" className='searchform movies__search' onSubmit={handleSearch} >
+                <form id="searchform" className='searchform movies__search' onSubmit={handleSearchClick} >
                     <SearchForm 
                         isSearch={search}
                         isError={error}
@@ -54,8 +59,8 @@ function Movies(props) {
                 />
             </div>
             <div className="movies__line"></div>
-            {props.isLoading && <Preloader />}               
-            {(props.movies.length !== 0) && (
+            {props.isLoading ? <Preloader /> : 
+            (props.movies.length !== 0) && (
                     <>
                         <MoviesCardList 
                             class="movies__container" 
@@ -66,7 +71,7 @@ function Movies(props) {
                             http={http} 
                             isLike={props.isLike}
                         />
-                        {(props.movies.length >= 7 && props.movies.length>= isVisible) 
+                        {(props.movies.length > sizeWindows() && props.movies.length > isVisible) 
                             && <button className="movies__more-btn" onClick={handleChangeVisible}>Ещё</button>}
                     </>)
             }

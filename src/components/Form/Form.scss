@@ -109,3 +109,15 @@
     line-height: 12px;
     color: #EE3465;
 }
+.form__error {
+    visibility: hidden;
+    min-height: 20px;
+    max-width: 336px;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    color: #EE3465; 
+}
+.form__error_active {
+    visibility:visible;
+}
