@@ -7,6 +7,11 @@ function Login(props) {
     const signupForm = useFormWithValidation();
 
     React.useEffect(() => {
+        signupForm.resetForm();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    React.useEffect(() => {
         props.setIsError('');
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [signupForm.values]);

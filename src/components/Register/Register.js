@@ -8,6 +8,7 @@ function Register(props) {
     
     React.useEffect(() => {
         props.setIsError('');
+        signupForm.resetForm();
     }, []);
 
     React.useEffect(() => {

@@ -42,28 +42,16 @@ function App() {
 
     // Проверка кукисов
     React.useEffect(() => {
-        setIsError('');
-        ApiMain.checkToken()
-            .then((res) => {
-                if(res.message !== "Необходима авторизация") {
-                    setLoggedIn(true);
-                    history.push("/");
-                    setCurrentUser(res);
-                    setIsError('');
-                } else {
-                    throw new Error(res.message);
-                }
-            })
-            .catch((err) => console.log(err.message));
+        checkToken();
     }, [history]);
 
     // Загрузка сохраненных фильмов 
     React.useEffect(() => {
-        if(currentUser._id) {
+        if(currentUser && loggedIn) {
             handleGetSavedMovies();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentUser]);
+    }, [currentUser, loggedIn]);
 
     // При обновлении состояния фильмов запускаем поиск
     React.useEffect(() => {
@@ -182,6 +170,21 @@ function App() {
             .catch((err) => setIsError(err.message));
     }
     
+    const checkToken = () => {
+        ApiMain.checkToken()
+        .then((res) => {
+            if(res.message !== "Необходима авторизация") {
+                setLoggedIn(true);
+                history.push("/movies");
+                setCurrentUser(res);
+                handleDefaultWindow();
+            } else {
+                throw new Error(res.message);
+            }
+        })
+        .catch((err) => console.log(err.message));
+    }
+        
     // Разлогинирование
     const handleSignOut = () => {
         ApiMain.logout()
@@ -202,11 +205,7 @@ function App() {
         ApiMain.register(email, password, name)
             .then((res) => {
                 if (!res.message) {
-                    setLoggedIn(true);
-                    setCurrentUser(res);
-                    handleDefaultWindow();
-                    handleGetSavedMovies();
-                    history.push("/movies");
+                    history.push("/signin");
                 } else {
                     throw new Error(res.message);
                 }

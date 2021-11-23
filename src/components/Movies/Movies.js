@@ -21,6 +21,7 @@ function Movies(props) {
     React.useEffect(() => {
         props.reset();
         setError(false);
+        // props.setIsError('');
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
