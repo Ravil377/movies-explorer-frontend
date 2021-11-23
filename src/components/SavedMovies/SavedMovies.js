@@ -19,7 +19,6 @@ function SavedMovies(props) {
 
     React.useEffect(() => {
         props.reset();
-        setError(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

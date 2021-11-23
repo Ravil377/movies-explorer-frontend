@@ -8,6 +8,10 @@ function Register(props) {
     
     React.useEffect(() => {
         props.setIsError('');
+    }, []);
+
+    React.useEffect(() => {
+        props.setIsError('');
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [signupForm.values]);
 

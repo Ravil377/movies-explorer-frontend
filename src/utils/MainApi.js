@@ -115,7 +115,8 @@ class ApiMain {
 }
 
 const apiOptions = {
-    baseUrl: 'http://localhost:3000',
+    baseUrl: 'https://ravil-movies-api.nomoredomains.monster',
+    //baseUrl: 'http://localhost:3000',
 };
 
 const apiMain = new ApiMain(apiOptions);

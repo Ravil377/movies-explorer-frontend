@@ -42,12 +42,14 @@ function App() {
 
     // Проверка кукисов
     React.useEffect(() => {
+        setIsError('');
         ApiMain.checkToken()
             .then((res) => {
-                if(!res.message) {
+                if(res.message !== "Необходима авторизация") {
                     setLoggedIn(true);
                     history.push("/");
                     setCurrentUser(res);
+                    setIsError('');
                 } else {
                     throw new Error(res.message);
                 }
@@ -65,7 +67,9 @@ function App() {
 
     // При обновлении состояния фильмов запускаем поиск
     React.useEffect(() => {
-        handleSearchMoviesClick(search.search, search.isShort, search.isSaveMovie);
+        if(films !== null) {
+            handleSearchMoviesClick(search.search, search.isShort, search.isSaveMovie);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [films]);
 
@@ -73,11 +77,6 @@ function App() {
     React.useEffect(() => {
         setIsLoading(false);
     }, [filterMovies, isError]);
-
-    // при обновлении состояния поиск включаем прелоадер
-    React.useEffect(() => {
-        setIsLoading(true);
-    }, [search]);
 
     // Обнуление состояния ошибки и отфильтрованных фильмов
     const handleDefaultWindow = () => {
@@ -87,6 +86,7 @@ function App() {
       
     // Нажатие на кнопку поиска в фильмах
     const handleSearchMoviesClick = (search, isShort, isSaveMovie) => {
+        setIsLoading(true);
         const bd = isSaveMovie ? saveMovies : films;
         searchFromMovies(search, isShort, bd);
     }
@@ -110,42 +110,40 @@ function App() {
 
     // Загрузка фильмов с проверкой на присутствие ранее загруженных фильмов и дальнейшая передача их в состояние.
     // Смена состояние поиска.
-    function handleGetMovies(search, isShort, isSaveMovie) {
-        if (localStorage.getItem('movies') === null) {
-            ApiMovies.getInitialMovies()
+    const getFilms = () => {
+        ApiMovies.getInitialMovies()
                 .then((res) => {
-                    if(!res.message) {
-                        localStorage.setItem("movies", JSON.stringify(res));
-                    } else {
-                        throw new Error('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
-                    }
+                    localStorage.setItem("movies", JSON.stringify(res));
+                    setFilms(JSON.parse(localStorage.getItem("movies")));
                 })
                 .catch(err => {
-                    setIsError(err.message);
+                    setIsError('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
                 });
+    }
+
+
+    function handleGetMovies(search, isShort, isSaveMovie) {
+        setIsLoading(true);
+        setSearch({ search: search, isShort: isShort, isSaveMovie: isSaveMovie })
+        if (localStorage.getItem('movies') === null) {
+            getFilms();
+        } else {
+            setFilms(JSON.parse(localStorage.getItem("movies")));
         }
-        setFilms(JSON.parse(localStorage.getItem("movies")));
-        setSearch({
-            search:search, 
-            isShort:isShort,
-            isSaveMovie:isSaveMovie
-        })
     }
 
     // Загрузка сохраненных фильмов
     const handleGetSavedMovies = () => {
         setIsError(false);
         ApiMain.getInitialSavedMovies()
-        .then((res) => {
-            if(!res.message) {
-                setSaveMovies(() => res.filter((movie) => {
-                    return movie.owner === currentUser._id;
-                }));
-            } else {
-                throw new Error(res.message);
-            }
-        })
-        .catch(err => setIsError(err.message));
+            .then((res) => {
+                if(!res.message) {
+                    setSaveMovies(() => res.filter((movie) => movie.owner === currentUser._id));
+                } else {
+                    throw new Error(res.message);
+                }
+            })
+            .catch(err => setIsError(err.message));
     }
 
     // Мобильное меню
@@ -206,6 +204,8 @@ function App() {
                 if (!res.message) {
                     setLoggedIn(true);
                     setCurrentUser(res);
+                    handleDefaultWindow();
+                    handleGetSavedMovies();
                     history.push("/movies");
                 } else {
                     throw new Error(res.message);
@@ -221,6 +221,8 @@ function App() {
                 if (res.message === "Пользователь залогинен") {
                     setLoggedIn(true);
                     setCurrentUser(res);
+                    handleDefaultWindow();
+                    handleGetSavedMovies();
                     history.push("/movies");
                 } else {
                     throw new Error(res.message);
