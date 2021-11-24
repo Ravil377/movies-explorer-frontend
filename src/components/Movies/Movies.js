@@ -16,12 +16,14 @@ function Movies(props) {
 
     React.useEffect(() => {
         setIsVisible(sizeWindows);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [windowSize.width]);
 
     React.useEffect(() => {
-        props.reset();
+        props.checkToken();
+        props.resetError();
+        props.resetFilter();
         setError(false);
-        // props.setIsError('');
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -29,7 +31,7 @@ function Movies(props) {
 
     const handleSearchClick = (e) => {
         e.preventDefault();
-        props.reset();
+        props.resetError();
         search ? props.getMovies(search, shortFilm, false) : setError(true);
         setIsVisible(sizeWindows());
     }
@@ -38,7 +40,7 @@ function Movies(props) {
 
     const handleChangeSearch = (e) => {
         setError(false);
-        props.reset();
+        props.resetError();
         setSearch(e.target.value);
     }
 
@@ -48,7 +50,7 @@ function Movies(props) {
                 <form id="searchform" className='searchform movies__search' onSubmit={handleSearchClick} >
                     <SearchForm 
                         isSearch={search}
-                        isError={error}
+                        error={error}
                         onGetMovies={props.getMovies}
                         onChange={handleChangeSearch}
                     />
@@ -76,7 +78,7 @@ function Movies(props) {
                             && <button className="movies__more-btn" onClick={handleChangeVisible}>Ещё</button>}
                     </>)
             }
-            {props.isError !== '' && <p className="movies__error">{props.isError}</p>}
+            {props.isError.error !== '' && <p className="movies__error">{props.isError.error}</p>}
         </div>
     );
 }

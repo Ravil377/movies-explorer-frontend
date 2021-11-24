@@ -9,7 +9,7 @@ function SearchForm(props) {
             <button type="submit" className="searchform__btn">
                 <ReactSVG src={SvgMagnifier} className="searchform__image" />
             </button>
-            {props.isError && <span className="searchform__search-error">Нужно ввести ключевое слово</span>}
+            {props.error && <span className="searchform__search-error">Нужно ввести ключевое слово</span>}
         </div>
     );
 }

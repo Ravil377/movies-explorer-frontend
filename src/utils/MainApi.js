@@ -4,7 +4,11 @@ class ApiMain {
     }
 
     _answerForServer(res) {
-        return res.json();
+        if (res.ok) {
+            return res.json();
+        }
+        console.log(res);
+        return Promise.reject(res.status);
     }
 
     getInitialSavedMovies() {
@@ -115,8 +119,8 @@ class ApiMain {
 }
 
 const apiOptions = {
-    baseUrl: 'https://ravil-movies-api.nomoredomains.monster',
-    //baseUrl: 'http://localhost:3000',
+   // baseUrl: 'https://ravil-movies-api.nomoredomains.monster',
+    baseUrl: 'http://localhost:3000',
 };
 
 const apiMain = new ApiMain(apiOptions);

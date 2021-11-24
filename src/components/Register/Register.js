@@ -7,14 +7,15 @@ function Register(props) {
     const signupForm = useFormWithValidation();
     
     React.useEffect(() => {
-        props.setIsError('');
+        props.resetError();
         signupForm.resetForm();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
-        props.setIsError('');
+        props.resetError();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [signupForm.values]);
+    }, [signupForm.values.name, signupForm.values.email, signupForm.values.password]);
 
     const handleSubmitRegister = (e) => {
         e.preventDefault();
@@ -49,7 +50,7 @@ function Register(props) {
                     value={signupForm.values.email}
                     error={signupForm.errors.email}
                     required={true}
-                    pattern="^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
+                    pattern="^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+\.+[a-zA-Z]{2,}$"
                 />
                 <InputField 
                     label="Password" 

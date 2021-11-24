@@ -7,6 +7,10 @@ export function useFormWithValidation() {
   const [values, setValues] = React.useState({name: currentUser.name || '', email: currentUser.email || '', password:''});
   const [errors, setErrors] = React.useState({});
   const [isValidity, setIsValidity] = React.useState(false);
+
+  React.useEffect(() => {
+    setValues({name: currentUser.name, email: currentUser.email})
+  }, [currentUser]);
   
   const handleChange = (event) => {
     const target = event.target;

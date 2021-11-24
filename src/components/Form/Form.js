@@ -12,7 +12,7 @@ function Form(props) {
             <h2 className="form__title">{props.title}</h2>
                 <form name={props.name} className={`form ${props.name} ${props.className}`} onSubmit={props.onSubmit}>
                     {props.children}
-                    {<span className={`form__error ${props.isError && 'form__error_active'}`}>{props.isError}</span>}
+                    {<span className={`form__error ${props.isError.error && 'form__error_active'}`}>{props.isError.error}</span>}
                     <button type="submit" className="btn form__submit-btn" disabled={!props.buttonActive}>
                         {props.name === "register" ? "Зарегистрироваться" : "Войти"}
                     </button>

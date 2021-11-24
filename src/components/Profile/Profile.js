@@ -10,6 +10,18 @@ function Profile(props) {
         props.signOut();
     };
 
+    React.useEffect(() => {
+        props.resetError();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [signupForm.values.name, signupForm.values.email]);
+
+    React.useEffect(() => {
+        props.resetError();
+        props.checkToken();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+
     const handlerEditProfile = (e) => {
         e.preventDefault();
         props.onUpdateUser(signupForm.values);
@@ -43,11 +55,12 @@ function Profile(props) {
                             name="email" 
                             onChange={signupForm.handleChange} 
                             value={signupForm.values.email} 
-                            pattern="^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
+                            pattern="^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+\.+[a-zA-Z]{2,}$"
                             required
                         />
                         {signupForm.errors.email && <span className="form__input-error profile__input-error">{signupForm.errors.email || ''}</span>}
                     </div>
+                    {<span className={`form__error ${props.isError.error && 'form__error_active'} ${props.isError.success && 'form__error_success'}`}>{props.isError.error}{props.isError.success}</span>}
                     <div className="profile__navigation">
                         <button type="submit" className="profile__link" onClick={handlerEditProfile} disabled={!signupForm.isValidity}>Редактировать</button>
                         <p className="profile__link profile__link_red" onClick={handlerSignOut}>Выйти из аккаунта</p>

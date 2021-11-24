@@ -15,10 +15,14 @@ function SavedMovies(props) {
     
     React.useEffect(() => {
         setIsVisible(sizeWindows);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [windowSize.width]);
 
     React.useEffect(() => {
-        props.reset();
+        props.checkToken();
+        props.resetError();
+        props.resetFilter();
+        setError(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -26,7 +30,7 @@ function SavedMovies(props) {
 
     const handleSearchClick = (e) => {
         e.preventDefault();
-        props.reset();
+        props.resetError();
         search ? props.onSearchClick(search, isShortFilm, true) : setError(true);
         setIsVisible(6);
     }
@@ -44,7 +48,7 @@ function SavedMovies(props) {
                 <form id="searchform" className='searchform movies__search' onSubmit={handleSearchClick} >
                 <SearchForm 
                         isSearch={search}
-                        isError={error}
+                        error={error}
                         handleSearchClick={handleSearchClick}
                         onChange={handleChangeSearch}
                     />
@@ -71,7 +75,7 @@ function SavedMovies(props) {
                                 && <button className="movies__more-btn" onClick={handleChangeVisible}>Ещё</button>}
                     </>)
             }
-            {props.isError !== '' && <p className="movies__error">{props.isError}</p>}
+            {props.isError.error !== '' && <p className="movies__error">{props.isError.error}</p>}
         </div>
     );
 }

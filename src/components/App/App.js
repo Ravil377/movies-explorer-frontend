@@ -30,7 +30,7 @@ function App() {
     const [isMenuOpen, setMenuOpen] = React.useState(false);
     const [loggedIn, setLoggedIn] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
-    const [isError, setIsError] = React.useState('');
+    const [isError, setIsError] = React.useState({error: '', success: ''});
     const [filterMovies, setFilterMovies] = React.useState([]);
     const [saveMovies, setSaveMovies] = React.useState([]);
     const [currentUser, setCurrentUser] = React.useState({});
@@ -42,16 +42,18 @@ function App() {
 
     // Проверка кукисов
     React.useEffect(() => {
+        // console.log('token');
         checkToken();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [history]);
 
-    // Загрузка сохраненных фильмов 
-    React.useEffect(() => {
-        if(currentUser && loggedIn) {
-            handleGetSavedMovies();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentUser, loggedIn]);
+    // // Загрузка сохраненных фильмов 
+    // React.useEffect(() => {
+    //     if(currentUser && loggedIn) {
+    //         handleGetSavedMovies();
+    //     }
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [currentUser, loggedIn]);
 
     // При обновлении состояния фильмов запускаем поиск
     React.useEffect(() => {
@@ -65,12 +67,6 @@ function App() {
     React.useEffect(() => {
         setIsLoading(false);
     }, [filterMovies, isError]);
-
-    // Обнуление состояния ошибки и отфильтрованных фильмов
-    const handleDefaultWindow = () => {
-        setIsError('');
-        setFilterMovies([]);
-    }
       
     // Нажатие на кнопку поиска в фильмах
     const handleSearchMoviesClick = (search, isShort, isSaveMovie) => {
@@ -87,7 +83,7 @@ function App() {
             let film = movie.nameRU.toLowerCase().includes(search.toLowerCase());
             return (isShort && film) ? movie.duration <= 40 : film;
         });
-        filtered.length === 0 ? setIsError('Ничего не найдено') : setFilterMovies(filtered);
+        filtered.length === 0 ? setIsError({error: 'Ничего не найдено'}) : setFilterMovies(filtered);
     };
 
     // Поиск фильма в сохраненных фильмах и возврат булева, для выставления лайка в мовисах.
@@ -95,6 +91,12 @@ function App() {
  
     // Поиск в сохраненных фильмах _id
     const findIdForRemove = (id) => saveMovies.find((movie) => parseInt(movie.movieId) === id);
+
+    // Сброс ошибок
+    const resetError = () => setIsError({error: '', success: ''});
+
+    // Обнуление состояния ошибки и отфильтрованных фильмов
+    const resetFilter = () => setFilterMovies([]);
 
     // Загрузка фильмов с проверкой на присутствие ранее загруженных фильмов и дальнейшая передача их в состояние.
     // Смена состояние поиска.
@@ -105,10 +107,9 @@ function App() {
                     setFilms(JSON.parse(localStorage.getItem("movies")));
                 })
                 .catch(err => {
-                    setIsError('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
+                    setIsError({error: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'});
                 });
     }
-
 
     function handleGetMovies(search, isShort, isSaveMovie) {
         setIsLoading(true);
@@ -122,16 +123,13 @@ function App() {
 
     // Загрузка сохраненных фильмов
     const handleGetSavedMovies = () => {
-        setIsError(false);
         ApiMain.getInitialSavedMovies()
             .then((res) => {
-                if(!res.message) {
-                    setSaveMovies(() => res.filter((movie) => movie.owner === currentUser._id));
-                } else {
-                    throw new Error(res.message);
-                }
+                setSaveMovies(() => res.filter((movie) => movie.owner === currentUser._id));
             })
-            .catch(err => setIsError(err.message));
+            .catch((err) => {
+                setIsError({error: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'});
+            });
     }
 
     // Мобильное меню
@@ -144,13 +142,11 @@ function App() {
     const handleSaveMovie = (movie) => {
         ApiMain.saveMovie(movie)
             .then((res) => {
-                if(!res.message) {
-                    setSaveMovies([res, ...saveMovies]);                    
-                } else {
-                    throw new Error(res.message);
-                }
+                setSaveMovies([res, ...saveMovies]);                    
             })
-            .catch((err) => setIsError(err.message));
+            .catch((err) => {
+                setIsError({error: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'});
+            });
     };
 
     // Удаление лайка
@@ -160,29 +156,24 @@ function App() {
     const deleteMovie = (id) => {
         ApiMain.deleteMovie(id)
             .then((res) => {
-                if(!res.message) {
-                    setFilterMovies(() => filterMovies.filter((movie) => movie._id !== res._id));
-                    setSaveMovies(() => saveMovies.filter((movie) => movie._id !== res._id));
-                } else {
-                    throw new Error(res.message);
-                }
+                setFilterMovies(() => filterMovies.filter((movie) => movie._id !== res._id));
+                setSaveMovies(() => saveMovies.filter((movie) => movie._id !== res._id));
             })
-            .catch((err) => setIsError(err.message));
+            .catch((err) => {
+                setIsError({error: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'});
+            });
     }
     
-    const checkToken = () => {
+    async function checkToken() {
         ApiMain.checkToken()
-        .then((res) => {
-            if(res.message !== "Необходима авторизация") {
-                setLoggedIn(true);
-                history.push("/movies");
-                setCurrentUser(res);
-                handleDefaultWindow();
-            } else {
-                throw new Error(res.message);
-            }
-        })
-        .catch((err) => console.log(err.message));
+            .then((res) => {
+                if (res.message !== "Необходима авторизация") {
+                    setLoggedIn(true);
+                    setCurrentUser(res);
+                    handleGetSavedMovies();
+                }
+            })
+            .catch((err) => console.log('Необходима авторизация'));
     }
         
     // Разлогинирование
@@ -193,24 +184,26 @@ function App() {
                     localStorage.removeItem('movies');
                     setLoggedIn(false);
                     history.push("/");
-                } else {
-                    throw new Error(res.message);
                 }
             })
-            .catch((err) => setIsError(err.message));
+            .catch((err) => setIsError({error: 'На сервере произошла ошибка'}));
     };
 
     // Регистрация пользователя
     const handleRegisterUser = ({ email, password, name }) => {
         ApiMain.register(email, password, name)
             .then((res) => {
-                if (!res.message) {
-                    history.push("/signin");
+                handleLoginUser({ email, password });
+            })
+            .catch((err) => {
+                if(err === 409) {
+                    setIsError({error: 'Пользователь с таким email уже существует'});
+                } else if(err === 500) {
+                    setIsError({error: 'На сервере произошла ошибка'});
                 } else {
-                    throw new Error(res.message);
+                    setIsError({error: 'При регистрации пользователя произошла ошибка'});
                 }
             })
-            .catch((err) => setIsError(err.message));
     };
 
     // Аутентификация
@@ -218,29 +211,35 @@ function App() {
         ApiMain.login(email, password)
             .then((res) => {
                 if (res.message === "Пользователь залогинен") {
-                    setLoggedIn(true);
-                    setCurrentUser(res);
-                    handleDefaultWindow();
-                    handleGetSavedMovies();
+                    checkToken();
                     history.push("/movies");
-                } else {
-                    throw new Error(res.message);
                 }
             })
-            .catch((err) => setIsError(err.message));
+            .catch((err) => {
+                if(err === 401) {
+                    setIsError({error: 'Вы ввели неправильный логин или пароль'});
+                } else {
+                    setIsError({error: 'На сервере произошла ошибка'});
+                }
+            })
     };
 
     // Изменение данных пользователя
     const handleUpdateUser = ({ name, email }) => {
         ApiMain.updateUser(name, email)
             .then((res) => {
-                if(!res.message) {
-                    setCurrentUser({ name: res.name, email: res.email });
+                setCurrentUser({ name: res.name, email: res.email });
+                setIsError({success: "Данные успешно изменены"})
+            })
+            .catch((err) => {
+                if(err === 409) {
+                    setIsError({error: 'Пользователь с таким email уже существует'});
+                } else if(err === 500) {
+                    setIsError({error: 'На сервере произошла ошибка'});
                 } else {
-                    throw new Error(res.message);
+                    setIsError({error: 'При обновлении профиля произошла ошибка'});
                 }
             })
-            .catch((err) => setIsError(err.message));
     };
 
     return (
@@ -259,14 +258,16 @@ function App() {
                             path="/movies" 
                             loggedIn={loggedIn} 
                             isLoading={isLoading}
-                            isError={isError}
+                            isError={isError} 
+                            resetError={resetError}
+                            checkToken={checkToken}
                             onSearchClick={handleSearchMoviesClick}
                             getMovies={handleGetMovies}
                             saveMovie={handleSaveMovie}
                             removeMovie={handleRemoveMovie}
                             isLike={compareMoviesLike}
+                            resetFilter={resetFilter}
                             movies={filterMovies}
-                            reset={handleDefaultWindow} 
                         />
 
                         <ProtectedRoute 
@@ -274,13 +275,15 @@ function App() {
                             path="/saved-movies" 
                             loggedIn={loggedIn} 
                             isLoading={isLoading}
-                            isError={isError}
                             onSearchClick={handleSearchMoviesClick}
+                            checkToken={checkToken}
                             isLike={compareMoviesLike}
                             saveMovies={saveMovies}
                             movies={filterMovies}
                             deleteMovie={deleteMovie}
-                            reset={handleDefaultWindow}
+                            isError={isError} 
+                            resetFilter={resetFilter}
+                            resetError={resetError}
                         />
 
                         <ProtectedRoute
@@ -288,31 +291,33 @@ function App() {
                             loggedIn={loggedIn}
                             component={Profile}
                             signOut={handleSignOut}
+                            checkToken={checkToken}
                             onUpdateUser={handleUpdateUser}
+                            isError={isError}
+                            resetError={resetError}
                         />
 
-                        <Route path="/signup">
-                            <Register 
-                                onRegister={handleRegisterUser}
-                                isError={isError}
-                                setIsError={setIsError} />
-                        </Route>
-
-                        <Route path="/signin">
-                            <Login 
-                                onLogin={handleLoginUser}
-                                isError={isError}
-                                setIsError={setIsError} />
+                        <Route path="/profile">
+                            <Profile 
+                                loggedIn={loggedIn}
+                                signOut={handleSignOut}
+                                onUpdateUser={handleUpdateUser}
+                                checkToken={checkToken}
+                                isError={isError} 
+                                resetError={resetError}
+                            />
                         </Route>
 
                         <Route path="/movies">
                             <Movies 
+                                loggedIn={loggedIn}
                                 onSearchClick={handleSearchMoviesClick}
                                 getMovies={handleGetMovies}
                                 saveMovie={handleSaveMovie}
                                 removeMovie={handleRemoveMovie}
-                                reset={handleDefaultWindow}
+                                resetFilter={resetFilter}
                                 isLike={compareMoviesLike}
+                                checkToken={checkToken}
                                 isLoading={isLoading}
                                 isError={isError}
                                 movies={filterMovies} 
@@ -321,9 +326,11 @@ function App() {
 
                         <Route path="/saved-movies">
                             <SavedMovies    
+                                loggedIn={loggedIn}
                                 onSearchClick={handleSearchMoviesClick}
-                                reset={handleDefaultWindow}
+                                resetFilter={resetFilter}
                                 isLike={compareMoviesLike}
+                                checkToken={checkToken}
                                 saveMovies={saveMovies}
                                 isLoading={isLoading}
                                 isError={isError}
@@ -331,10 +338,20 @@ function App() {
                             />
                         </Route>
 
-                        <Route path="/profile">
-                            <Profile 
-                                onUpdateUser={handleUpdateUser} 
-                                signOut={handleSignOut} />
+                        <Route path="/signup">
+                            <Register 
+                                onRegister={handleRegisterUser}
+                                isError={isError} 
+                                resetError={resetError}
+                            />
+                        </Route>
+
+                        <Route path="/signin">
+                            <Login 
+                                onLogin={handleLoginUser}
+                                isError={isError} 
+                                resetError={resetError}
+                            />
                         </Route>
 
                         <Route exact path="/">
