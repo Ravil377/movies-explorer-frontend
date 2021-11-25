@@ -7,7 +7,6 @@ class ApiMain {
         if (res.ok) {
             return res.json();
         }
-        console.log(res);
         return Promise.reject(res.status);
     }
 

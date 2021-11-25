@@ -19,7 +19,7 @@ function SavedMovies(props) {
     }, [windowSize.width]);
 
     React.useEffect(() => {
-        props.checkToken();
+        console.log(props.movies);
         props.resetError();
         props.resetFilter();
         setError(false);
@@ -61,7 +61,7 @@ function SavedMovies(props) {
             </div>
             <div className="movies__line"></div>
             {props.isLoading ? <Preloader /> : 
-            (props.movies.length !== 0) && (
+            (props.movies.length !== 0 && props.movies !== null) && (
                     <>
                         <MoviesCardList 
                             class="movies__container" 

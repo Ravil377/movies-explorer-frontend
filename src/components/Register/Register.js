@@ -28,7 +28,7 @@ function Register(props) {
                 title="Добро пожаловать!" 
                 onSubmit={handleSubmitRegister}
                 isError={props.isError}
-                buttonActive={signupForm.isValidity} 
+                buttonActive={props.sendForm ? !props.sendForm : signupForm.isValidity} 
             >
                 <InputField 
                     label="Имя" 

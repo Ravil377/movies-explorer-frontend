@@ -13,6 +13,7 @@ import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import Error404 from "../error404/error404";
 import ApiMain from "../../utils/MainApi";
 import ApiMovies from "../../utils/MoviesApi";
+import Preloader from "../Preloader/Preloader";
 
 function App() {
     const exclusionForHeader = [
@@ -30,12 +31,14 @@ function App() {
     const [isMenuOpen, setMenuOpen] = React.useState(false);
     const [loggedIn, setLoggedIn] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
     const [isError, setIsError] = React.useState({error: '', success: ''});
-    const [filterMovies, setFilterMovies] = React.useState([]);
+    const [saveFilterMovies, setSaveFilterMovies] = React.useState([]);
+    const [moviesFilter, setMoviesFilter] = React.useState([]);
     const [saveMovies, setSaveMovies] = React.useState([]);
     const [currentUser, setCurrentUser] = React.useState({});
     const [films, setFilms] = React.useState([]);
-    const [search, setSearch] = React.useState({search: '', isShort: false, isSaveMovie: false});
+    const [sendForm, setSendForm] = React.useState(false);
 
     const history = useHistory();
     const location = useLocation();
@@ -55,35 +58,37 @@ function App() {
     //     // eslint-disable-next-line react-hooks/exhaustive-deps
     // }, [currentUser, loggedIn]);
 
-    // При обновлении состояния фильмов запускаем поиск
-    React.useEffect(() => {
-        if(films !== null) {
-            handleSearchMoviesClick(search.search, search.isShort, search.isSaveMovie);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [films]);
+    // // При обновлении состояния фильмов запускаем поиск
+    // React.useEffect(() => {
+    //     if(films !== null) {
+    //         handleSearchMoviesClick(search.search, search.isShort, search.isSaveMovie);
+    //     }
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [films]);
 
     // при обновлении состояния отфильтрованных фильмов либо ошибки отключаем прелоадер
     React.useEffect(() => {
         setIsLoading(false);
-    }, [filterMovies, isError]);
+    }, [saveFilterMovies, moviesFilter, isError]);
       
     // Нажатие на кнопку поиска в фильмах
     const handleSearchMoviesClick = (search, isShort, isSaveMovie) => {
+        isSaveMovie ? setSaveFilterMovies([]) : setMoviesFilter([]);
         setIsLoading(true);
-        const bd = isSaveMovie ? saveMovies : films;
-        searchFromMovies(search, isShort, bd);
+        searchFromMovies(search, isShort, isSaveMovie);
     }
 
     // Приводим название и запрос к нижнему регистру и ищем совпадение. 
     // Возвращаем разные данные в зависимости от чекбокса короткометражки.
     // Отключаем прелоадинг и возвращаем результат поиска.
-    const searchFromMovies = (search, isShort, movies) => {
-        const filtered = movies.filter((movie) => {
+    const searchFromMovies = (search, isShort, isSaveMovie) => {
+        const data = isSaveMovie ? films : saveMovies;
+        const filtered = data.filter((movie) => {
             let film = movie.nameRU.toLowerCase().includes(search.toLowerCase());
             return (isShort && film) ? movie.duration <= 40 : film;
         });
-        filtered.length === 0 ? setIsError({error: 'Ничего не найдено'}) : setFilterMovies(filtered);
+        filtered.length === 0 ? setIsError({error: 'Ничего не найдено'}) : isSaveMovie ? setSaveFilterMovies(filtered) : setMoviesFilter(filtered);
+        localStorage.setItem("filteredmovies", JSON.stringify(filtered));
     };
 
     // Поиск фильма в сохраненных фильмах и возврат булева, для выставления лайка в мовисах.
@@ -96,28 +101,29 @@ function App() {
     const resetError = () => setIsError({error: '', success: ''});
 
     // Обнуление состояния ошибки и отфильтрованных фильмов
-    const resetFilter = () => setFilterMovies([]);
+    // const resetFilter = () => setFilterMovies([]);
 
     // Загрузка фильмов с проверкой на присутствие ранее загруженных фильмов и дальнейшая передача их в состояние.
     // Смена состояние поиска.
-    const getFilms = () => {
+    const getFilms = async(search, isShort, isSaveMovie) => {
         ApiMovies.getInitialMovies()
                 .then((res) => {
                     localStorage.setItem("movies", JSON.stringify(res));
                     setFilms(JSON.parse(localStorage.getItem("movies")));
+                    handleSearchMoviesClick(search, isShort, isSaveMovie);
                 })
                 .catch(err => {
                     setIsError({error: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'});
                 });
     }
 
-    function handleGetMovies(search, isShort, isSaveMovie) {
+    async function handleGetMovies(search, isShort, isSaveMovie) {
         setIsLoading(true);
-        setSearch({ search: search, isShort: isShort, isSaveMovie: isSaveMovie })
         if (localStorage.getItem('movies') === null) {
-            getFilms();
+            getFilms(search, isShort, isSaveMovie);
         } else {
             setFilms(JSON.parse(localStorage.getItem("movies")));
+            handleSearchMoviesClick(search, isShort, isSaveMovie);
         }
     }
 
@@ -152,11 +158,16 @@ function App() {
     // Удаление лайка
     const handleRemoveMovie = (id) => deleteMovie(findIdForRemove(id)._id);
 
+    const handleLoadFilteredFilm = async() => {
+        setMoviesFilter(JSON.parse(localStorage.getItem("filteredmovies")));
+        setSaveFilterMovies(JSON.parse(localStorage.getItem("savefilteredmovies")));
+    }
+    
     // Удаление фильма из сохраненных фильмов и отфильтрованных фильмов
     const deleteMovie = (id) => {
         ApiMain.deleteMovie(id)
             .then((res) => {
-                setFilterMovies(() => filterMovies.filter((movie) => movie._id !== res._id));
+                setSaveFilterMovies(() => saveFilterMovies.filter((movie) => movie._id !== res._id));
                 setSaveMovies(() => saveMovies.filter((movie) => movie._id !== res._id));
             })
             .catch((err) => {
@@ -164,16 +175,21 @@ function App() {
             });
     }
     
-    async function checkToken() {
+    function checkToken() {
         ApiMain.checkToken()
             .then((res) => {
                 if (res.message !== "Необходима авторизация") {
+                    handleLoadFilteredFilm();
                     setLoggedIn(true);
                     setCurrentUser(res);
+                    setLoading(true);
                     handleGetSavedMovies();
                 }
             })
-            .catch((err) => console.log('Необходима авторизация'));
+            .catch((err) => {
+                setLoading(true);
+                console.log('Необходима авторизация');
+            });
     }
         
     // Разлогинирование
@@ -191,11 +207,14 @@ function App() {
 
     // Регистрация пользователя
     const handleRegisterUser = ({ email, password, name }) => {
+        setSendForm(true);
         ApiMain.register(email, password, name)
             .then((res) => {
+                setSendForm(false);
                 handleLoginUser({ email, password });
             })
             .catch((err) => {
+                setSendForm(false);
                 if(err === 409) {
                     setIsError({error: 'Пользователь с таким email уже существует'});
                 } else if(err === 500) {
@@ -208,14 +227,18 @@ function App() {
 
     // Аутентификация
     const handleLoginUser = ({ email, password }) => {
+        setSendForm(true);
         ApiMain.login(email, password)
             .then((res) => {
+                setSendForm(false);
                 if (res.message === "Пользователь залогинен") {
-                    checkToken();
+                    setLoading(true);
                     history.push("/movies");
+                    checkToken();
                 }
             })
             .catch((err) => {
+                setSendForm(false);
                 if(err === 401) {
                     setIsError({error: 'Вы ввели неправильный логин или пароль'});
                 } else {
@@ -226,12 +249,15 @@ function App() {
 
     // Изменение данных пользователя
     const handleUpdateUser = ({ name, email }) => {
+        setSendForm(true);
         ApiMain.updateUser(name, email)
             .then((res) => {
+                setSendForm(false);
                 setCurrentUser({ name: res.name, email: res.email });
                 setIsError({success: "Данные успешно изменены"})
             })
             .catch((err) => {
+                setSendForm(false);
                 if(err === 409) {
                     setIsError({error: 'Пользователь с таким email уже существует'});
                 } else if(err === 500) {
@@ -251,8 +277,8 @@ function App() {
                                         isLogged={loggedIn} 
                                         onClose={handleMenuClose}
                                         onOpen={handleMenuOpen} />}
-
-                    <Switch>
+                {loading ? 
+                    (<Switch>
                         <ProtectedRoute 
                             component={Movies}
                             path="/movies" 
@@ -266,8 +292,8 @@ function App() {
                             saveMovie={handleSaveMovie}
                             removeMovie={handleRemoveMovie}
                             isLike={compareMoviesLike}
-                            resetFilter={resetFilter}
-                            movies={filterMovies}
+                            // resetFilter={resetFilter}
+                            movies={moviesFilter}
                         />
 
                         <ProtectedRoute 
@@ -279,10 +305,10 @@ function App() {
                             checkToken={checkToken}
                             isLike={compareMoviesLike}
                             saveMovies={saveMovies}
-                            movies={filterMovies}
+                            movies={saveFilterMovies}
                             deleteMovie={deleteMovie}
                             isError={isError} 
-                            resetFilter={resetFilter}
+                            // resetFilter={resetFilter}
                             resetError={resetError}
                         />
 
@@ -294,6 +320,7 @@ function App() {
                             checkToken={checkToken}
                             onUpdateUser={handleUpdateUser}
                             isError={isError}
+                            sendForm={sendForm}
                             resetError={resetError}
                         />
 
@@ -304,6 +331,7 @@ function App() {
                                 onUpdateUser={handleUpdateUser}
                                 checkToken={checkToken}
                                 isError={isError} 
+                                sendForm={sendForm}
                                 resetError={resetError}
                             />
                         </Route>
@@ -315,12 +343,12 @@ function App() {
                                 getMovies={handleGetMovies}
                                 saveMovie={handleSaveMovie}
                                 removeMovie={handleRemoveMovie}
-                                resetFilter={resetFilter}
+                                // resetFilter={resetFilter}
                                 isLike={compareMoviesLike}
                                 checkToken={checkToken}
                                 isLoading={isLoading}
                                 isError={isError}
-                                movies={filterMovies} 
+                                movies={moviesFilter} 
                             />
                         </Route>
 
@@ -328,13 +356,13 @@ function App() {
                             <SavedMovies    
                                 loggedIn={loggedIn}
                                 onSearchClick={handleSearchMoviesClick}
-                                resetFilter={resetFilter}
+                                // resetFilter={resetFilter}
                                 isLike={compareMoviesLike}
                                 checkToken={checkToken}
                                 saveMovies={saveMovies}
                                 isLoading={isLoading}
                                 isError={isError}
-                                movies={filterMovies} 
+                                movies={saveFilterMovies} 
                             />
                         </Route>
 
@@ -343,6 +371,7 @@ function App() {
                                 onRegister={handleRegisterUser}
                                 isError={isError} 
                                 resetError={resetError}
+                                sendForm={sendForm}
                             />
                         </Route>
 
@@ -350,6 +379,7 @@ function App() {
                             <Login 
                                 onLogin={handleLoginUser}
                                 isError={isError} 
+                                sendForm={sendForm}
                                 resetError={resetError}
                             />
                         </Route>
@@ -361,7 +391,8 @@ function App() {
                         <Route path="*">
                             <Error404 />
                         </Route>
-                    </Switch>
+                    </Switch>) : <Preloader />}
+
                     {outputHeader(exclusionForFooter) && <Footer />}
                 </div>
             </CurrentUserContext.Provider>

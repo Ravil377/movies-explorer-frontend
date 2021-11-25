@@ -20,9 +20,7 @@ function Movies(props) {
     }, [windowSize.width]);
 
     React.useEffect(() => {
-        props.checkToken();
         props.resetError();
-        props.resetFilter();
         setError(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -51,7 +49,6 @@ function Movies(props) {
                     <SearchForm 
                         isSearch={search}
                         error={error}
-                        onGetMovies={props.getMovies}
                         onChange={handleChangeSearch}
                     />
                 </form>
@@ -63,7 +60,7 @@ function Movies(props) {
             </div>
             <div className="movies__line"></div>
             {props.isLoading ? <Preloader /> : 
-            (props.movies.length !== 0) && (
+            (props.movies) && (
                     <>
                         <MoviesCardList 
                             class="movies__container" 

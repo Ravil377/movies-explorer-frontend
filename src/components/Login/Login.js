@@ -28,7 +28,7 @@ function Login(props) {
                 title="Рады видеть!" 
                 onSubmit={handleSubmitLogin}
                 isError={props.isError}
-                buttonActive={signupForm.isValidity} 
+                buttonActive={props.sendForm ? !props.sendForm : signupForm.isValidity} 
             >
                 <InputField 
                     label="E-mail" 
