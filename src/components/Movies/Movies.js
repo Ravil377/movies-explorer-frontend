@@ -10,7 +10,7 @@ function Movies(props) {
     const sizeWindows = () => windowSize.width < 427 ? 4 : 6;
     const [isVisible, setIsVisible] = React.useState(sizeWindows());
     const [search, setSearch] = React.useState("");
-    const [shortFilm, setShortFilm] = React.useState(false);
+    const [isShortFilm, setIsShortFilm] = React.useState(false);
     const [error, setError] = React.useState(false);
     const http = 'https://api.nomoreparties.co';
 
@@ -30,11 +30,11 @@ function Movies(props) {
     const handleSearchClick = (e) => {
         e.preventDefault();
         props.resetError();
-        search ? props.getMovies(search, shortFilm, false) : setError(true);
+        search ? props.onSearchClick(search, isShortFilm, false) : setError(true);
         setIsVisible(sizeWindows());
     }
    
-    const handleCheckbox = () => setShortFilm((state) => !state);
+    const handleCheckbox = () => setIsShortFilm((state) => !state);
 
     const handleChangeSearch = (e) => {
         setError(false);
@@ -55,7 +55,7 @@ function Movies(props) {
                 <FilterCheckbox 
                     class="movies__checkbox" 
                     onChange={handleCheckbox}
-                    value={shortFilm}
+                    value={isShortFilm}
                 />
             </div>
             <div className="movies__line"></div>

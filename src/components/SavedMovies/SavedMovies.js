@@ -19,7 +19,6 @@ function SavedMovies(props) {
     }, [windowSize.width]);
 
     React.useEffect(() => {
-        console.log(props.movies);
         props.resetError();
         props.resetFilter();
         setError(false);
@@ -30,7 +29,10 @@ function SavedMovies(props) {
 
     const handleSearchClick = (e) => {
         e.preventDefault();
-        props.resetError();
+        console.log('submit');
+        // props.resetFilter();
+        // props.resetError();
+        console.log(search);
         search ? props.onSearchClick(search, isShortFilm, true) : setError(true);
         setIsVisible(6);
     }
@@ -61,7 +63,7 @@ function SavedMovies(props) {
             </div>
             <div className="movies__line"></div>
             {props.isLoading ? <Preloader /> : 
-            (props.movies.length !== 0 && props.movies !== null) && (
+            (props.movies !== null) && (
                     <>
                         <MoviesCardList 
                             class="movies__container" 
