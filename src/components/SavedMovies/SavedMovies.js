@@ -12,6 +12,8 @@ function SavedMovies(props) {
     const [isShortFilm, setIsShortFilm] = React.useState(false);
     const [error, setError] = React.useState(false);
     
+    const showedMovies = isShortFilm ? props.movies.filter((film) => film.duration < 40) : props.movies;
+
     React.useEffect(() => {
         setIsVisible(sizeWindows);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -20,6 +22,7 @@ function SavedMovies(props) {
     React.useEffect(() => {
         props.resetError();
         props.resetFilter();
+        props.setSearch('');
         setError(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -65,11 +68,10 @@ function SavedMovies(props) {
                     <>
                         <MoviesCardList 
                             class="movies__container" 
-                            movies={props.movies} 
+                            movies={showedMovies} 
                             isVisible={isVisible}
                             removeMovie={props.removeMovie}
                             isLike={props.isLike} 
-                            deleteMovie={props.deleteMovie}
                         />
                             {(props.movies.length > sizeWindows() && props.movies.length > isVisible) 
                                 && <button className="movies__more-btn" onClick={handleChangeVisible}>Ещё</button>}

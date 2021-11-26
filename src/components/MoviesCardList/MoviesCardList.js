@@ -12,7 +12,7 @@ function MoviesCardList(props) {
                         saveMovie={props.saveMovie} 
                         removeMovie={props.removeMovie}
                         http={props.http} 
-                        deleteMovie={props.deleteMovie}
+                        findIdForRemove={props.findIdForRemove}
                     />
             ))}
         </ul>

@@ -6,8 +6,8 @@ import { useLocation } from "react-router-dom";
 function MoviesCard(props) {
     const location = useLocation();
     const likeButtonClassName = `moviecard__like ${props.card.isLike ? "" : "moviecard__like_unlike"}`;
-    const handleLikeClick = () => props.isLike ? props.removeMovie(props.card.id) : props.saveMovie(props.card);
-    const handleRemoveMovieClick = () => props.deleteMovie(props.card._id);
+    const handleLikeClick = () => props.card.isLike ? props.removeMovie(props.findIdForRemove(props.card.id)._id) : props.saveMovie(props.card);
+    const handleRemoveMovieClick = () => props.removeMovie(props.card._id);
     
     return (
         <>

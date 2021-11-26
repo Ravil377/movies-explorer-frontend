@@ -62,7 +62,7 @@ function Profile(props) {
                     </div>
                     {<span className={`form__error ${props.isError.error && 'form__error_active'} ${props.isError.success && 'form__error_success'}`}>{props.isError.error}{props.isError.success}</span>}
                     <div className="profile__navigation">
-                        <button type="submit" className="profile__link" onClick={handlerEditProfile} disabled={!signupForm.isValidity}>Редактировать</button>
+                        <button type="submit" className="profile__link" onClick={handlerEditProfile} disabled={props.sendForm ? props.sendForm : !signupForm.isValidity}>Редактировать</button>
                         <p className="profile__link profile__link_red" onClick={handlerSignOut}>Выйти из аккаунта</p>
                     </div>
                 </form>

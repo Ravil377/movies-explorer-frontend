@@ -14,20 +14,9 @@ import Error404 from "../error404/error404";
 import ApiMain from "../../utils/MainApi";
 import ApiMovies from "../../utils/MoviesApi";
 import Preloader from "../Preloader/Preloader";
+import {exclusionForHeader, exclusionForFooter} from "../../utils/Const";
 
-function App() {
-    const exclusionForHeader = [
-        '/',
-        '/movies',
-        '/saved-movies',
-        '/profile',
-    ]
-    const exclusionForFooter = [
-        '/',
-        '/movies',
-        '/saved-movies',
-    ]
-    
+function App() {    
     const [isMenuOpen, setMenuOpen] = React.useState(false);
     const [loggedIn, setLoggedIn] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
@@ -51,57 +40,36 @@ function App() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [history]);
 
-    // Загрузка фильтрованных и сохраненных фильмов
+    // Загрузка при запуске страницы фильтрованных и сохраненных фильмов
     React.useEffect(() => {
         if((loggedIn && currentUser)) {
-            console.log('Загрузка двух стэйтов');
             handleLoadFilteredFilm();
             handleGetSavedMovies();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentUser]);
-
-    // // При обновлении состояния фильмов запускаем поиск
-    // React.useEffect(() => {
-    //     if(search.isSaveMovie) {
-    //         searchFromMovies();
-    //     }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [search.search]);
-
-    
+   
     React.useEffect(() => {
         isSuccess && searchFromMovies(false);
     }, [isSuccess]);
       
-    const handleLoadFilteredFilm = () => {
-        setMoviesFilter(JSON.parse(localStorage.getItem("filteredmovies")));
-    }
+    // Загрузка в состояние с локалстоража отфильтрованных фильмов
+    const handleLoadFilteredFilm = () => setMoviesFilter(JSON.parse(localStorage.getItem("filteredmovies")));
 
-    // Нажатие на кнопку поиска в сохраненных фильмах
-    const handleSearchMoviesClick = (isSaveMovie) => {
-        !isSaveMovie ? handleGetMovies() : searchFromMovies(true);
-        // setIsFind(true);
-    }
+    // Нажатие на кнопку поиска в Movies и SavedMovies
+    const handleSearchMoviesClick = (isSaveMovie) => !isSaveMovie ? handleGetMovies() : searchFromMovies(true);
 
     // Приводим название и запрос к нижнему регистру и ищем совпадение. 
     // Возвращаем разные данные в зависимости от чекбокса короткометражки.
     // Отключаем прелоадинг и возвращаем результат поиска.
     const searchFromMovies = (isSaveMovie) => {
         let data = isSaveMovie ? saveMovies : films;
-        const filtered = data.filter((movie) => {
-            return movie.nameRU.toLowerCase().includes(search.toLowerCase());
-            // return (isShort && film) ? movie.duration <= 40 : film;
-        });
+        const filtered = data.filter((movie) => movie.nameRU.toLowerCase().includes(search.toLowerCase()));
         filtered.length === 0 ? setIsError({error: 'Ничего не найдено'}) : isSaveMovie ? setSaveFilterMovies(filtered) : setMoviesFilter(filtered);
         !isSaveMovie && localStorage.setItem('filteredmovies', JSON.stringify(filtered));
         setIsLoading(false);
         setIsSuccess(false);
     };
-
- 
-    // Поиск в сохраненных фильмах _id
-    const findIdForRemove = (id) => saveMovies.some((movie) => parseInt(movie.movieId) === id);
 
     // Сброс ошибок
     const resetError = () => setIsError({error: '', success: ''});
@@ -111,25 +79,18 @@ function App() {
 
     // Загрузка фильмов и проставление лайков
     const handleGetMovies = async() => {
-        if (localStorage.getItem('movies') === null) {
-            await ApiMovies.getInitialMovies()
-                .then((res) => {
-                    const addFieldLike = res.map((item) => {
-                        item.isLike = compareMoviesLike(item.id);
-                        return item;
-                    });
-                    console.log(addFieldLike);
-                    setFilms(addFieldLike);
-                    localStorage.setItem("movies", JSON.stringify(addFieldLike));
-                    setIsSuccess(true);
-                })
-                .catch(err => {
-                    setIsError({error: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'});
+        await ApiMovies.getInitialMovies()
+            .then((res) => {
+                const addFieldLike = res.map((item) => {
+                    item.isLike = compareMoviesLike(item.id);
+                    return item;
                 });
-        } else {
-            setFilms(JSON.parse(localStorage.getItem("movies")));
-            setIsSuccess(true);
-        }
+                setFilms(addFieldLike);
+                setIsSuccess(true);
+            })
+            .catch(err => {
+                setIsError({error: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'});
+            });
     }
 
     // Поиск фильма в сохраненных фильмах и возврат булева, для выставления лайка в мовисах.
@@ -137,20 +98,16 @@ function App() {
 
     // Загрузка сохраненных фильмов
     const handleGetSavedMovies = () => {
-        console.log('загрузка фильмов');
         ApiMain.getInitialSavedMovies()
-            .then((res) => {
-                setSaveMovies(res.filter((movie) => movie.owner === currentUser._id));
-            })
-            .catch((err) => {
-                setIsError({error: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'});
-            });
+            .then((res) => setSaveMovies(res.filter((movie) => movie.owner === currentUser._id)))
+            .catch(() => setIsError({error: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'}));
     }
 
     // Мобильное меню
     const handleMenuClose = () => setMenuOpen(false);
     const handleMenuOpen = () => setMenuOpen(true);
-
+    
+    // Вывод Header
     const outputHeader = (exclusionArray) => exclusionArray.indexOf(location.pathname) >= 0;
 
     // Сохранение фильма
@@ -158,22 +115,34 @@ function App() {
         await ApiMain.saveMovie(movie)
             .then((res) => {
                 setSaveMovies([res, ...saveMovies]);
+                const result = moviesFilter.map((film) => {
+                    if(parseInt(res.movieId) === film.id) {
+                        film.isLike = true;
+                    }
+                    return film;
+                });
+                setMoviesFilter(result);
+                localStorage.setItem('filteredmovies', JSON.stringify(result));
             })
-            .catch((err) => {
-                setIsError({error: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'});
-            });
+            .catch((err) => setIsError({error: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'}));
     };
 
-    // Удаление лайка
-    const handleRemoveMovie = (id) => deleteMovie(findIdForRemove(id)._id);
-  
+    // Поиск в сохраненных фильмах _id
+    const findIdForRemove = (id) => saveMovies.find((movie) => parseInt(movie.movieId) === id);
+    
     // Удаление фильма из сохраненных фильмов и отфильтрованных фильмов
-    const deleteMovie = async (id) => {
+    const handleRemoveMovie = async (id) => {
         await ApiMain.deleteMovie(id)
             .then((res) => {
-                // setFilms(() => films.find)
                 setSaveFilterMovies(() => saveFilterMovies.filter((movie) => movie._id !== res._id));
                 setSaveMovies(() => saveMovies.filter((movie) => movie._id !== res._id));
+                const result = moviesFilter.map((film) => {
+                    if(parseInt(res.movieId) === film.id) {
+                        film.isLike = false;
+                    }
+                    return film;
+                });
+                setMoviesFilter(result);
             })
             .catch((err) => {
                 setIsError({error: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'});
@@ -208,6 +177,7 @@ function App() {
                     setLoggedIn(false);
                     setMoviesFilter([]);
                     setCurrentUser({});
+                    setSearch('');
                     history.push("/");
                 }
             })
@@ -304,6 +274,7 @@ function App() {
                             getMovies={handleGetMovies}
                             saveMovie={handleSaveMovie}
                             removeMovie={handleRemoveMovie}
+                            findIdForRemove={findIdForRemove}
                             isLike={compareMoviesLike}
                             // resetFilter={resetFilter}
                             movies={moviesFilter}
@@ -322,7 +293,7 @@ function App() {
                             isLike={compareMoviesLike}
                             saveMovies={saveMovies}
                             movies={saveFilterMovies}
-                            deleteMovie={deleteMovie}
+                            removeMovie={handleRemoveMovie}
                             isError={isError} 
                             resetFilter={resetFilter}
                             resetError={resetError}
@@ -357,6 +328,7 @@ function App() {
                                 loggedIn={loggedIn} 
                                 isLoading={isLoading}
                                 search={search}
+                                findIdForRemove={findIdForRemove}
                                 setSearch={setSearch}
                                 setIsLoading={setIsLoading}
                                 onSearchClick={handleSearchMoviesClick}
@@ -383,7 +355,8 @@ function App() {
                                 checkToken={checkToken}
                                 saveMovies={saveMovies}
                                 isError={isError}
-                                movies={saveFilterMovies} 
+                                movies={saveFilterMovies}
+                                removeMovie={handleRemoveMovie}
                             />
                         </Route>
 

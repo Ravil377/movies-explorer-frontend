@@ -9,11 +9,11 @@ function Movies(props) {
     const windowSize = useWindowSize();
     const sizeWindows = () => windowSize.width < 427 ? 4 : 6;
     const [isVisible, setIsVisible] = React.useState(sizeWindows());
-    // const [search, setSearch] = React.useState("");
     const [isShortFilm, setIsShortFilm] = React.useState(false);
     const [error, setError] = React.useState(false);
     const http = 'https://api.nomoreparties.co';
-    
+
+    const showedMovies = isShortFilm ? props.movies.filter((film) => film.duration < 40) : props.movies;
 
     React.useEffect(() => {
         setIsVisible(sizeWindows);
@@ -27,6 +27,7 @@ function Movies(props) {
 
     React.useEffect(() => {
         props.resetError();
+        props.setSearch('');
         setError(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -71,10 +72,11 @@ function Movies(props) {
                     <>
                         <MoviesCardList 
                             class="movies__container" 
-                            movies={props.movies} 
+                            movies={showedMovies} 
                             isVisible={isVisible} 
                             saveMovie={props.saveMovie} 
                             removeMovie={props.removeMovie}
+                            findIdForRemove={props.findIdForRemove}
                             http={http} 
                         />
                         {(props.movies.length > sizeWindows() && props.movies.length > isVisible) 
