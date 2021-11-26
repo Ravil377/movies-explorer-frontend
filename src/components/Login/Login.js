@@ -22,13 +22,15 @@ function Login(props) {
         props.onLogin(signupForm.values);
     }
 
+    let activeButton = props.sendForm ? !props.sendForm : signupForm.isValidity;
+
     return (
             <Form 
                 name="login" 
                 title="Рады видеть!" 
                 onSubmit={handleSubmitLogin}
                 isError={props.isError}
-                buttonActive={props.sendForm ? !props.sendForm : signupForm.isValidity} 
+                buttonActive={activeButton} 
             >
                 <InputField 
                     label="E-mail" 

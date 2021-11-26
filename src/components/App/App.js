@@ -39,9 +39,9 @@ function App() {
     const [currentUser, setCurrentUser] = React.useState({});
     const [films, setFilms] = React.useState([]);
     const [sendForm, setSendForm] = React.useState(false);
-    // const [search, setSearch] = React.useState({ search: '', isShort: false, isSaveMovie: false })
-    const [isFind, setIsFind] = React.useState(false);
-    
+    const [isSuccess, setIsSuccess] = React.useState(false);
+    const [search, setSearch] = React.useState('');
+
     const history = useHistory();
     const location = useLocation();
 
@@ -51,13 +51,15 @@ function App() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [history]);
 
-    // Загрузка сохраненных фильмов и отфильтрованных
+    // Загрузка фильтрованных и сохраненных фильмов
     React.useEffect(() => {
-        if(loading && loggedIn) {
+        if((loggedIn && currentUser)) {
+            console.log('Загрузка двух стэйтов');
+            handleLoadFilteredFilm();
             handleGetSavedMovies();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [loading, loggedIn]);
+    }, [currentUser]);
 
     // // При обновлении состояния фильмов запускаем поиск
     // React.useEffect(() => {
@@ -67,38 +69,34 @@ function App() {
     //     // eslint-disable-next-line react-hooks/exhaustive-deps
     // }, [search.search]);
 
-    // // при обновлении состояния отфильтрованных фильмов либо ошибки отключаем прелоадер
-    // React.useEffect(() => {
-    //     if(films !== '' && films !== null && search.search) {
-    //         searchFromMovies();
-    //     }
-    // }, [films]);
+    
+    React.useEffect(() => {
+        isSuccess && searchFromMovies(false);
+    }, [isSuccess]);
       
     const handleLoadFilteredFilm = () => {
-        setMoviesFilter(() => JSON.parse(localStorage.getItem("filteredmovies")));
+        setMoviesFilter(JSON.parse(localStorage.getItem("filteredmovies")));
     }
 
     // Нажатие на кнопку поиска в сохраненных фильмах
-    const handleSearchMoviesClick = (search, isShort, isSaveMovie) => {
-        setIsLoading(true);
-        !isSaveMovie && handleGetMovies(search, isShort, isSaveMovie);
+    const handleSearchMoviesClick = (isSaveMovie) => {
+        !isSaveMovie ? handleGetMovies() : searchFromMovies(true);
         // setIsFind(true);
     }
 
     // Приводим название и запрос к нижнему регистру и ищем совпадение. 
     // Возвращаем разные данные в зависимости от чекбокса короткометражки.
     // Отключаем прелоадинг и возвращаем результат поиска.
-    const searchFromMovies = (search, isShort, isSaveMovie) => {
+    const searchFromMovies = (isSaveMovie) => {
         let data = isSaveMovie ? saveMovies : films;
-        console.log('data', data);
         const filtered = data.filter((movie) => {
-            let film = movie.nameRU.toLowerCase().includes(search.toLowerCase());
-            return (isShort && film) ? movie.duration <= 40 : film;
+            return movie.nameRU.toLowerCase().includes(search.toLowerCase());
+            // return (isShort && film) ? movie.duration <= 40 : film;
         });
         filtered.length === 0 ? setIsError({error: 'Ничего не найдено'}) : isSaveMovie ? setSaveFilterMovies(filtered) : setMoviesFilter(filtered);
-        setIsLoading(false);
-        setIsFind(false);
         !isSaveMovie && localStorage.setItem('filteredmovies', JSON.stringify(filtered));
+        setIsLoading(false);
+        setIsSuccess(false);
     };
 
  
@@ -112,24 +110,25 @@ function App() {
     const resetFilter = () => setSaveFilterMovies([]);
 
     // Загрузка фильмов и проставление лайков
-    const handleGetMovies = (search, isShort, isSaveMovie) => {
-        
+    const handleGetMovies = async() => {
         if (localStorage.getItem('movies') === null) {
-            ApiMovies.getInitialMovies()
+            await ApiMovies.getInitialMovies()
                 .then((res) => {
                     const addFieldLike = res.map((item) => {
                         item.isLike = compareMoviesLike(item.id);
                         return item;
                     });
-                    setFilms(addFieldLike, () => searchFromMovies(search, isShort, isSaveMovie));
+                    console.log(addFieldLike);
+                    setFilms(addFieldLike);
                     localStorage.setItem("movies", JSON.stringify(addFieldLike));
-                    
+                    setIsSuccess(true);
                 })
                 .catch(err => {
                     setIsError({error: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'});
                 });
         } else {
-            setFilms(JSON.parse(localStorage.getItem("movies")), () => searchFromMovies(search, isShort, isSaveMovie));
+            setFilms(JSON.parse(localStorage.getItem("movies")));
+            setIsSuccess(true);
         }
     }
 
@@ -137,12 +136,11 @@ function App() {
     const compareMoviesLike = (id) => saveMovies.some((movie) => parseInt(movie.movieId) === id);
 
     // Загрузка сохраненных фильмов
-    const handleGetSavedMovies = async() => {
+    const handleGetSavedMovies = () => {
+        console.log('загрузка фильмов');
         ApiMain.getInitialSavedMovies()
             .then((res) => {
-                setSaveMovies((state) => {
-                    return res.filter((movie) => movie.owner === currentUser._id);
-                });
+                setSaveMovies(res.filter((movie) => movie.owner === currentUser._id));
             })
             .catch((err) => {
                 setIsError({error: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'});
@@ -189,7 +187,6 @@ function App() {
                     setLoggedIn(true);
                     setCurrentUser(res);
                     setLoading(true);
-                    handleLoadFilteredFilm();
                 }
             })
             .catch((err) => {
@@ -199,8 +196,8 @@ function App() {
     }
         
     // Разлогинирование
-    const handleSignOut = () => {
-        ApiMain.logout()
+    const handleSignOut = async() => {
+        await ApiMain.logout()
             .then((res) => {
                 if(res.message === "Пользователь разлогинен") {
                     localStorage.removeItem('movies');
@@ -238,9 +235,9 @@ function App() {
     };
 
     // Аутентификация
-    const handleLoginUser = async ({ email, password }) => {
+    const handleLoginUser = ({ email, password }) => {
         setSendForm(true);
-        await ApiMain.login(email, password)
+        ApiMain.login(email, password)
             .then((res) => {
                 if (res.message === "Пользователь залогинен") {
                     setSendForm(false);
@@ -267,6 +264,7 @@ function App() {
                 setSendForm(false);
                 setCurrentUser({ name: res.name, email: res.email });
                 setIsError({success: "Данные успешно изменены"})
+                setLoading(true);
             })
             .catch((err) => {
                 setSendForm(false);
@@ -296,6 +294,9 @@ function App() {
                             path="/movies" 
                             loggedIn={loggedIn} 
                             isLoading={isLoading}
+                            search={search}
+                            setSearch={setSearch}
+                            setIsLoading={setIsLoading}
                             isError={isError} 
                             resetError={resetError}
                             checkToken={checkToken}
@@ -313,6 +314,9 @@ function App() {
                             path="/saved-movies" 
                             loggedIn={loggedIn} 
                             isLoading={isLoading}
+                            search={search}
+                            setSearch={setSearch}
+                            setIsLoading={setIsLoading}
                             onSearchClick={handleSearchMoviesClick}
                             checkToken={checkToken}
                             isLike={compareMoviesLike}
@@ -350,15 +354,17 @@ function App() {
 
                         <Route path="/movies">
                             <Movies 
-                                loggedIn={loggedIn}
+                                loggedIn={loggedIn} 
+                                isLoading={isLoading}
+                                search={search}
+                                setSearch={setSearch}
+                                setIsLoading={setIsLoading}
                                 onSearchClick={handleSearchMoviesClick}
                                 getMovies={handleGetMovies}
                                 saveMovie={handleSaveMovie}
                                 removeMovie={handleRemoveMovie}
-                                // resetFilter={resetFilter}
                                 isLike={compareMoviesLike}
                                 checkToken={checkToken}
-                                isLoading={isLoading}
                                 isError={isError}
                                 movies={moviesFilter} 
                             />
@@ -366,13 +372,16 @@ function App() {
 
                         <Route path="/saved-movies">
                             <SavedMovies    
-                                loggedIn={loggedIn}
+                                loggedIn={loggedIn} 
+                                isLoading={isLoading}
+                                search={search}
+                                setSearch={setSearch}
+                                setIsLoading={setIsLoading}
                                 onSearchClick={handleSearchMoviesClick}
                                 resetFilter={resetFilter}
                                 isLike={compareMoviesLike}
                                 checkToken={checkToken}
                                 saveMovies={saveMovies}
-                                isLoading={isLoading}
                                 isError={isError}
                                 movies={saveFilterMovies} 
                             />

@@ -9,7 +9,7 @@ function Movies(props) {
     const windowSize = useWindowSize();
     const sizeWindows = () => windowSize.width < 427 ? 4 : 6;
     const [isVisible, setIsVisible] = React.useState(sizeWindows());
-    const [search, setSearch] = React.useState("");
+    // const [search, setSearch] = React.useState("");
     const [isShortFilm, setIsShortFilm] = React.useState(false);
     const [error, setError] = React.useState(false);
     const http = 'https://api.nomoreparties.co';
@@ -21,6 +21,11 @@ function Movies(props) {
     }, [windowSize.width]);
 
     React.useEffect(() => {
+        error && props.setIsLoading(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [error]);
+
+    React.useEffect(() => {
         props.resetError();
         setError(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -30,8 +35,9 @@ function Movies(props) {
 
     const handleSearchClick = (e) => {
         e.preventDefault();
+        props.setIsLoading(true);
         props.resetError();
-        search ? props.onSearchClick(search, isShortFilm, false) : setError(true);
+        props.search ? props.onSearchClick(false) : setError(true);
         setIsVisible(sizeWindows());
     }
    
@@ -40,7 +46,7 @@ function Movies(props) {
     const handleChangeSearch = (e) => {
         setError(false);
         props.resetError();
-        setSearch(e.target.value);
+        props.setSearch(e.target.value);
     }
 
     return (
@@ -48,7 +54,7 @@ function Movies(props) {
             <div className="movies__search-container">
                 <form id="searchform" className='searchform movies__search' onSubmit={handleSearchClick} >
                     <SearchForm 
-                        isSearch={search}
+                        isSearch={props.search}
                         error={error}
                         onChange={handleChangeSearch}
                     />

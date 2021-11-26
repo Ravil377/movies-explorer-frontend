@@ -9,7 +9,6 @@ function SavedMovies(props) {
     const windowSize = useWindowSize();
     const sizeWindows = () => windowSize.width < 427 ? 4 : 6;
     const [isVisible, setIsVisible] = React.useState(sizeWindows());
-    const [search, setSearch] = React.useState("");
     const [isShortFilm, setIsShortFilm] = React.useState(false);
     const [error, setError] = React.useState(false);
     
@@ -29,15 +28,16 @@ function SavedMovies(props) {
 
     const handleSearchClick = (e) => {
         e.preventDefault();
+        props.setIsLoading(true);
         props.resetFilter();
-        // props.resetError();
-        search ? props.onSearchClick(search, isShortFilm, true) : setError(true);
+        props.resetError();
+        props.search ? props.onSearchClick(true) : setError(true);
         setIsVisible(6);
     }
 
     const handleChangeSearch = (e) => {
         setError(false);
-        setSearch(e.target.value);
+        props.setSearch(e.target.value);
     }
 
     const handleCheckbox = () => setIsShortFilm((state) => !state);
@@ -47,7 +47,7 @@ function SavedMovies(props) {
             <div className="movies__search-container">
                 <form id="searchform" className='searchform movies__search' onSubmit={handleSearchClick} >
                 <SearchForm 
-                        isSearch={search}
+                        isSearch={props.search}
                         error={error}
                         handleSearchClick={handleSearchClick}
                         onChange={handleChangeSearch}
