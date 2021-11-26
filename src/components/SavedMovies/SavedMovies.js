@@ -29,10 +29,8 @@ function SavedMovies(props) {
 
     const handleSearchClick = (e) => {
         e.preventDefault();
-        console.log('submit');
-        // props.resetFilter();
+        props.resetFilter();
         // props.resetError();
-        console.log(search);
         search ? props.onSearchClick(search, isShortFilm, true) : setError(true);
         setIsVisible(6);
     }

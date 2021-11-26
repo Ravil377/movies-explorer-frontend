@@ -13,6 +13,7 @@ function Movies(props) {
     const [isShortFilm, setIsShortFilm] = React.useState(false);
     const [error, setError] = React.useState(false);
     const http = 'https://api.nomoreparties.co';
+    
 
     React.useEffect(() => {
         setIsVisible(sizeWindows);
@@ -69,7 +70,6 @@ function Movies(props) {
                             saveMovie={props.saveMovie} 
                             removeMovie={props.removeMovie}
                             http={http} 
-                            isLike={props.isLike}
                         />
                         {(props.movies.length > sizeWindows() && props.movies.length > isVisible) 
                             && <button className="movies__more-btn" onClick={handleChangeVisible}>Ещё</button>}

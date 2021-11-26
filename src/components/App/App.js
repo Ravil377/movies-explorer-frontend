@@ -39,7 +39,7 @@ function App() {
     const [currentUser, setCurrentUser] = React.useState({});
     const [films, setFilms] = React.useState([]);
     const [sendForm, setSendForm] = React.useState(false);
-    const [search, setSearch] = React.useState({ search: '', isShort: false, isSaveMovie: false })
+    // const [search, setSearch] = React.useState({ search: '', isShort: false, isSaveMovie: false })
     const [isFind, setIsFind] = React.useState(false);
     
     const history = useHistory();
@@ -59,20 +59,20 @@ function App() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loading, loggedIn]);
 
-    // При обновлении состояния фильмов запускаем поиск
-    React.useEffect(() => {
-        if(isFind) {
-            searchFromMovies();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isFind]);
+    // // При обновлении состояния фильмов запускаем поиск
+    // React.useEffect(() => {
+    //     if(search.isSaveMovie) {
+    //         searchFromMovies();
+    //     }
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [search.search]);
 
-    // при обновлении состояния отфильтрованных фильмов либо ошибки отключаем прелоадер
-    React.useEffect(() => {
-        if(films !== '' && films !== null && search.search) {
-            searchFromMovies();
-        }
-    }, [films]);
+    // // при обновлении состояния отфильтрованных фильмов либо ошибки отключаем прелоадер
+    // React.useEffect(() => {
+    //     if(films !== '' && films !== null && search.search) {
+    //         searchFromMovies();
+    //     }
+    // }, [films]);
       
     const handleLoadFilteredFilm = () => {
         setMoviesFilter(() => JSON.parse(localStorage.getItem("filteredmovies")));
@@ -81,31 +81,26 @@ function App() {
     // Нажатие на кнопку поиска в сохраненных фильмах
     const handleSearchMoviesClick = (search, isShort, isSaveMovie) => {
         setIsLoading(true);
-        !isSaveMovie && handleGetMovies();
-        setSearch({search: search, isShort: isShort, isSaveMovie: isSaveMovie})
-        setIsFind(true);
+        !isSaveMovie && handleGetMovies(search, isShort, isSaveMovie);
+        // setIsFind(true);
     }
 
     // Приводим название и запрос к нижнему регистру и ищем совпадение. 
     // Возвращаем разные данные в зависимости от чекбокса короткометражки.
     // Отключаем прелоадинг и возвращаем результат поиска.
-    const searchFromMovies = () => {
-        let data = search.isSaveMovie ? saveMovies : films;
+    const searchFromMovies = (search, isShort, isSaveMovie) => {
+        let data = isSaveMovie ? saveMovies : films;
+        console.log('data', data);
         const filtered = data.filter((movie) => {
-            let film = movie.nameRU.toLowerCase().includes(search.search.toLowerCase());
-            return (search.isShort && film) ? movie.duration <= 40 : film;
+            let film = movie.nameRU.toLowerCase().includes(search.toLowerCase());
+            return (isShort && film) ? movie.duration <= 40 : film;
         });
-        filtered.length === 0 ? setIsError({error: 'Ничего не найдено'}) : search.isSaveMovie ? setSaveFilterMovies(filtered) : setMoviesFilter(filtered);
+        filtered.length === 0 ? setIsError({error: 'Ничего не найдено'}) : isSaveMovie ? setSaveFilterMovies(filtered) : setMoviesFilter(filtered);
         setIsLoading(false);
         setIsFind(false);
-        !search.isSaveMovie && localStorage.setItem('filteredmovies', JSON.stringify(filtered));
+        !isSaveMovie && localStorage.setItem('filteredmovies', JSON.stringify(filtered));
     };
 
-    // Поиск фильма в сохраненных фильмах и возврат булева, для выставления лайка в мовисах.
-    const compareMoviesLike = (id) => saveMovies.some((movie) => {
-        // console.log(parseInt(movie.movieId) === id && id);
-        return parseInt(movie.movieId) === id;
-    });
  
     // Поиск в сохраненных фильмах _id
     const findIdForRemove = (id) => saveMovies.some((movie) => parseInt(movie.movieId) === id);
@@ -116,33 +111,38 @@ function App() {
     // Обнуление отфильтрованных фильмов
     const resetFilter = () => setSaveFilterMovies([]);
 
-    // Загрузка фильмов с проверкой на присутствие ранее загруженных фильмов и дальнейшая передача их в состояние.
-    // Смена состояние поиска.
-    const handleGetMovies = () => {
+    // Загрузка фильмов и проставление лайков
+    const handleGetMovies = (search, isShort, isSaveMovie) => {
+        
         if (localStorage.getItem('movies') === null) {
-            getFilms();
-        } else {
-            setFilms(JSON.parse(localStorage.getItem("movies")));
-        }
-    }
-
-    const getFilms = async () => {
-        await ApiMovies.getInitialMovies()
+            ApiMovies.getInitialMovies()
                 .then((res) => {
-                    setFilms((state) => res.forEach(item => item.isLike = compareMoviesLike(item.id)));
-                    localStorage.setItem("movies", JSON.stringify(films));
+                    const addFieldLike = res.map((item) => {
+                        item.isLike = compareMoviesLike(item.id);
+                        return item;
+                    });
+                    setFilms(addFieldLike, () => searchFromMovies(search, isShort, isSaveMovie));
+                    localStorage.setItem("movies", JSON.stringify(addFieldLike));
+                    
                 })
                 .catch(err => {
                     setIsError({error: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'});
                 });
+        } else {
+            setFilms(JSON.parse(localStorage.getItem("movies")), () => searchFromMovies(search, isShort, isSaveMovie));
+        }
     }
+
+    // Поиск фильма в сохраненных фильмах и возврат булева, для выставления лайка в мовисах.
+    const compareMoviesLike = (id) => saveMovies.some((movie) => parseInt(movie.movieId) === id);
 
     // Загрузка сохраненных фильмов
     const handleGetSavedMovies = async() => {
-        await ApiMain.getInitialSavedMovies()
+        ApiMain.getInitialSavedMovies()
             .then((res) => {
-                setSaveMovies(res.filter((movie) => movie.owner === currentUser._id));
-                console.log(saveMovies);
+                setSaveMovies((state) => {
+                    return res.filter((movie) => movie.owner === currentUser._id);
+                });
             })
             .catch((err) => {
                 setIsError({error: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'});
