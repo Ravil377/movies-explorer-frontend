@@ -1,7 +1,7 @@
 .form__container {
-    margin: auto;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     padding: 20px 30px;
     height: 100%;
     max-width: 396px;
@@ -16,11 +16,12 @@
 .form {
     display: flex;
     flex-direction: column;
+    height: 100%;
 }
 
 .form__logo {
     margin: 0 auto;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     @media (min-width: $screen-md) {
         margin: 0;
         margin-bottom: 40px;
@@ -34,7 +35,7 @@
     line-height: 1.81rem;
     text-align: center;
     color: #000000;
-    margin-bottom: 80px;
+    margin-bottom: 20px;
     @media (min-width: $screen-md) {
         text-align: left;
         margin: 0;
@@ -47,10 +48,17 @@
     font-size: 0.62rem;
     line-height: 0.75rem;
     color: #a0a0a0;
-    margin-bottom: 10px;
+}
+
+.form__input-container {
+    margin-bottom: 30px;
 }
 
 .form__input {
+    margin-top: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    display: block;
     padding: 15px;
     background: #f4f4f4;
     border-radius: 8px;
@@ -59,19 +67,22 @@
     line-height: 1rem;
     color: #000000;
     border: none;
-    margin-bottom: 20px;
     &:last-of-type {
         margin-bottom: 0;
     }
 }
 
 .form__submit-btn {
+    width: 100%;
     padding: 15px 0;
     font-size: 0.75rem;
     margin-top: auto;
     margin-bottom: 14px;
     @media (min-width: $screen-md) {
         margin-bottom: 16px;
+    }
+    &:disabled {
+        opacity: .3;
     }
 }
 
@@ -81,6 +92,7 @@
     line-height: 0.93rem;
     text-align: center;
     color: #a0a0a0;
+    margin-bottom: 20px;
 }
 
 .form__link {
@@ -89,10 +101,28 @@
     color: #3456f3;
 }
 
-.form__error {
-    margin-top: 10px;
+.form__input-error {
+    max-width: 336px;
+    position: absolute;
     font-weight: 400;
     font-size: 10px;
     line-height: 12px;
     color: #EE3465;
+}
+.form__error {
+    visibility: hidden;
+    min-height: 20px;
+    max-width: 336px;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    color: #EE3465; 
+}
+.form__error_active {
+    visibility:visible;
+}
+
+.form__error_success {
+    visibility:visible;
+    color: green; 
 }

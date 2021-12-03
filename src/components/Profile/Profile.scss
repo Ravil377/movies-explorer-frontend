@@ -20,6 +20,7 @@
 }
 
 .profile__input-container {
+    position: relative;
     display: flex;
     padding: 16px 0;
     align-items: center;
@@ -28,6 +29,10 @@
     &:last-of-type {
         border-bottom: none;
     }
+}
+.profile__input-error {
+    bottom: -13px;
+    max-width: 100%;
 }
 
 .profile__title {
@@ -62,6 +67,8 @@
 }
 
 .profile__link {
+    border: none;
+    background: transparent;
     margin: 0 auto;
     font-weight: normal;
     font-size: 12px;

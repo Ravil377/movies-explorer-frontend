@@ -1,24 +1,27 @@
 import React from "react";
 import { ReactSVG } from "react-svg";
 import Heart from "../../images/heart.svg";
-import Saved from "../../images/saved.svg";
 import { useLocation } from "react-router-dom";
 
 function MoviesCard(props) {
     const location = useLocation();
     const likeButtonClassName = `moviecard__like ${props.card.isLike ? "" : "moviecard__like_unlike"}`;
-
+    const handleLikeClick = () => props.card.isLike ? props.removeMovie(props.findIdForRemove(props.card.id)._id) : props.saveMovie(props.card);
+    const handleRemoveMovieClick = () => props.removeMovie(props.card._id);
+    
     return (
         <>
-            <li className="moviecard">
-                <img src={process.env.PUBLIC_URL + `${props.card.image}`} className="moviecard__image" alt="logo" />
+            <li className={`moviecard ${props.isVisible ? 'moviecard_visible' : ''}`}>
+                <a href={props.card.trailerLink || props.card.trailer} target="_blank" rel="noopener noreferrer" className="moviecard__trailer">
+                    <img src={`${props.http ? props.http : ''}${props.card.image.url ? props.card.image.url : props.card.image}`} className="moviecard__image" alt="logo" />
+                </a>
                 <div className="moviecard__container">
                     <p className="moviecard__title">
-                        {props.card.name}
+                        {props.card.nameRU}
                         <span>{props.card.duration}</span>
                     </p>
-                    {location.pathname === ("saved-movies" || "movies") ? <ReactSVG src={Saved} className="moviecard__saved" /> :
-                        <ReactSVG src={Heart} className={likeButtonClassName} />}
+                    {location.pathname === ('/saved-movies') ? <button className="moviecard__saved" onClick={handleRemoveMovieClick}/> :
+                        <ReactSVG src={Heart} className={likeButtonClassName} onClick={handleLikeClick}/>}
                 </div>
             </li>
         </>

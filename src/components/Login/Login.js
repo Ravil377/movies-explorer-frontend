@@ -1,25 +1,58 @@
 import React from "react";
 import Form from "../Form/Form";
+import { useFormWithValidation } from "../ValidationForm/ValidationForm";
+import InputField from "../InputField/InputField";
 
 function Login(props) {
+    const signupForm = useFormWithValidation();
+
+    React.useEffect(() => {
+        props.resetError();
+        signupForm.resetForm();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    React.useEffect(() => {
+        props.resetError();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [signupForm.values.email, signupForm.values.password]);
+
+    const handleSubmitLogin = (e) => {
+        e.preventDefault();
+        props.onLogin(signupForm.values);
+    }
+
+    let activeButton = props.sendForm ? !props.sendForm : signupForm.isValidity;
 
     return (
-        <>
-            <Form name="login" title="Рады видеть!">
-                <>
-                    <label htmlFor="email" className="form__input-title">
-                        E-mail
-                    </label>
-                    <input type="email" name="email" placeholder="" id="email-input" className="form__input" required />
-                    <span className="form__input-error"></span>
-                    <label htmlFor="password" className="form__input-title">
-                        Password
-                    </label>
-                    <input type="password" name="password" placeholder="" id="password-input" className="form__input" required />
-                    <span className="form__input-error"></span>
-                </>
+            <Form 
+                name="login" 
+                title="Рады видеть!" 
+                onSubmit={handleSubmitLogin}
+                isError={props.isError}
+                buttonActive={activeButton} 
+            >
+                <InputField 
+                    label="E-mail" 
+                    name="email" 
+                    type="email" 
+                    onChange={signupForm.handleChange} 
+                    value={signupForm.values.email}
+                    error={signupForm.errors.email}
+                    required={true} 
+                    pattern="^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+\.+[a-zA-Z]{2,}$"
+                />
+                <InputField 
+                    label="Password" 
+                    name="password" 
+                    type="password" 
+                    onChange={signupForm.handleChange} 
+                    value={signupForm.values.password}
+                    error={signupForm.errors.password}
+                    minLength="8" 
+                    required={true}
+                />
             </Form>
-        </>
     );
 }
 

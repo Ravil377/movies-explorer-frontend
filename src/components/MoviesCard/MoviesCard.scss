@@ -1,5 +1,5 @@
 .moviecard {
-    display: flex;
+    display: none;
     width: 100%;
     background: #f4f4f4;
     margin-bottom: 20px;
@@ -13,7 +13,9 @@
         margin-bottom: 40px;
     }
 }
-
+.moviecard_visible {
+    display: flex;
+}
 .moviecard__container {
     padding: 14px 12px;
     display: flex;
@@ -27,17 +29,23 @@
     }
 }
 
-.moviecard__image {
+.moviecard__trailer {
+    box-sizing: border-box;
     width: 100%;
-    object-fit: cover;
-
+    height: 168px;
+    padding: 6px;
     @media (min-width: $screen-sm) {
-        box-sizing: border-box;
-        max-width: 232px;
-        height: 134px;
         order: 2;
-        padding: 6px;
+        max-width: 232px;
+        height: 122px;
+        text-decoration: none;
     }
+}
+
+.moviecard__image {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
 }
 
 .moviecard__title {
@@ -74,8 +82,35 @@
     stroke: #e8e8e8;
 }
 .moviecard__saved {
+    border: none;
+    background-color: transparent;
+    position: relative;
     margin-top: auto;
     width: 14px;
     height: 12px;
     cursor: pointer;
+    transition: .5s;
+    &:hover {
+        opacity: .5;
+    }
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 100%;
+        height: 1px;
+        background-color: black;
+        transform: rotate(45deg) translateY(-50%);
+    }
+    &::before {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        width: 100%;
+        height: 1px;
+        background-color: black;
+        transform: rotate(-45deg) translateY(-50%);
+    }
 }

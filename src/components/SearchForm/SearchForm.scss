@@ -1,4 +1,5 @@
 .searchform__search {
+    position: relative;
     width: 100%;
     box-sizing: border-box;
     height: 48px;
@@ -34,6 +35,7 @@
 }
 
 .searchform__btn {
+    border: none;
     width: 34px;
     height: 34px;
     background: #3456f3;
@@ -50,4 +52,13 @@
     width: 24px;
     height: 24px;
     margin: auto;
+}
+
+.searchform__search-error {
+    bottom: -18px;
+    position: absolute;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    color: #EE3465;
 }
